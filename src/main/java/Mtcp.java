@@ -1,4 +1,4 @@
-import javax.smartcardio.Card;
+import cards.*;
 
 public class Mtcp{
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package main.java.cards;
+package cards;
 
 public class MonsterCard extends Card {
     public MonsterCard() {

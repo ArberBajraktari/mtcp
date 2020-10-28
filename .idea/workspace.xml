@@ -23,11 +23,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe097ad7-7942-46a6-9d26-a71464fb868e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/mtcp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mtcp.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Mtcp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Mtcp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cards/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cards/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cards/MonsterCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cards/MonsterCard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +71,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.importing" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RunManager">
     <configuration name="Mtcp" type="Application" factoryName="Application" nameIsGenerated="true">
@@ -103,7 +103,7 @@
       <updated>1603890478301</updated>
       <workItem from="1603890481278" duration="2765000" />
       <workItem from="1603897413132" duration="293000" />
-      <workItem from="1603897730231" duration="71000" />
+      <workItem from="1603897730231" duration="482000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1603890543886</created>
@@ -151,30 +151,34 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="593" y="262" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1440.900@0.0.1440.900" timestamp="1603892367444" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1603897713054">
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1603898230183">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1603897713054" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1603898230183" />
     <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1603896835653" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1603897713052">
+    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1603898230181">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1603897713052" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1603898230181" />
     <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1603896835651" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1603897713050">
+    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1603898230179">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1603897713050" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1603898230179" />
     <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1603896835650" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1603897713053">
+    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1603898230183">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1603897713053" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1603898230183" />
     <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1603896835652" />
-    <state x="208" y="23" width="1024" height="797" key="SettingsEditor" timestamp="1603897694524">
+    <state x="258" y="112" key="Maven.ArtifactSearchDialog" timestamp="1603897928099">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="208" y="23" width="1024" height="797" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1603897694524" />
+    <state x="258" y="112" key="Maven.ArtifactSearchDialog/0.0.1440.900@0.0.1440.900" timestamp="1603897928099" />
+    <state x="208" y="23" width="1024" height="797" key="SettingsEditor" timestamp="1603898214238">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="208" y="23" width="1024" height="797" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1603898214238" />
     <state x="208" y="43" key="SettingsEditor/0.23.1440.797@0.23.1440.797" timestamp="1603897648050" />
     <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1603890553944">
       <screen x="0" y="0" width="1440" height="900" />

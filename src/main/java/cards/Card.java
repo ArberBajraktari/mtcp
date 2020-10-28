@@ -1,4 +1,4 @@
-package main.java.cards;
+package cards;
 
 public abstract class Card {
     private String __name;
