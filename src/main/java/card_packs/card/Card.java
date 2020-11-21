@@ -1,4 +1,4 @@
-package cards;
+package card_packs.card;
 
 public abstract class Card {
     private String __name;

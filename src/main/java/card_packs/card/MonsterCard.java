@@ -1,4 +1,4 @@
-package cards;
+package card_packs.card;
 
 public class MonsterCard extends Card {
     public MonsterCard() {
