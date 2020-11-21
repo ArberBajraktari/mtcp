@@ -1,6 +1,9 @@
 package card_packs.card;
 
+//TODO: Configure Card
+
 public abstract class Card {
+
     private String __name;
     private int __damage;
 

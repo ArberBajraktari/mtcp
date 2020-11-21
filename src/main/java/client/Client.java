@@ -3,7 +3,11 @@ import card_packs.Deck;
 import card_packs.Stack;
 import server.Server;
 
+
 public class Client implements IPlayable{
+
+    //TODO: Configure the client
+
     //clients info
     private String _username;
     private String _password;
