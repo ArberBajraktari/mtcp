@@ -4,12 +4,14 @@ package card_packs.card;
 
 public abstract class Card {
 
-    private String __name;
-    private int __damage;
+    protected String __name;
+    protected int __damage;
+    protected ELEMENT __elementType;
 
     public Card() {
         this.__damage = 100;
         this.__name = "default";
+        this.__elementType = ELEMENT.NOT_SET;
     }
 
     public Card(String name, int damage) {

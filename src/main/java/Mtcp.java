@@ -6,12 +6,6 @@ public class Mtcp{
     public static Client client = new Client();
 
     public static void main(String[] args) {
-        server.checkRequest();
-        //if client not logged in server
-        //client is not created
-
-
-
-
+        
     }
 }

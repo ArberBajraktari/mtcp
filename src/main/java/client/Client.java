@@ -6,8 +6,6 @@ import server.Server;
 
 public class Client implements IPlayable{
 
-    //TODO: Configure the client
-
     //clients info
     private String _username;
     private String _password;
@@ -26,10 +24,20 @@ public class Client implements IPlayable{
     public Client(){
         //default client
         _username = "Max";
+        _password = "password";
         _coins = 20;
         _eloRating = 0;
         _logged = false;
     }
+
+    public Client(String username, String password){
+        new Client();
+        this._username = username;
+        this._password = password;
+    }
+
+
+
 
     //show client profile
     public void showProfile(){
@@ -38,6 +46,7 @@ public class Client implements IPlayable{
         System.out.println("\r\tCoins: " + _coins);
         System.out.println("\r\tElo Rating: " + _eloRating);
     }
+
 
 
 }

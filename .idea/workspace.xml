@@ -31,8 +31,11 @@
   <component name="ChangeListManager">
     <list default="true" id="fe097ad7-7942-46a6-9d26-a71464fb868e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Mtcp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Mtcp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/card_packs/card/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/card_packs/card/Card.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/ISecurity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +47,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -83,7 +87,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager">
     <configuration name="Mtcp" type="Application" factoryName="Application" nameIsGenerated="true">
@@ -107,6 +111,8 @@
       <workItem from="1603897730231" duration="482000" />
       <workItem from="1605971599533" duration="13000" />
       <workItem from="1605971649539" duration="4064000" />
+      <workItem from="1606056590262" duration="1011000" />
+      <workItem from="1606058421275" duration="31000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1603890543886</created>
@@ -158,10 +164,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="320" y="115" width="1071" height="700" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1603892369513" />
-    <state x="533" y="173" key="#com.intellij.ide.util.MemberChooser" timestamp="1605974681470">
+    <state x="533" y="173" key="#com.intellij.ide.util.MemberChooser" timestamp="1606053990357">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="533" y="173" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1605974681470" />
+    <state x="533" y="173" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1606053990357" />
     <state x="593" y="262" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1603892367444">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -170,34 +176,42 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="418" y="381" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1440.900@0.0.1440.900" timestamp="1605972930395" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1605978534094">
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1606055513645">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1605978534094" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1606055513645" />
     <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1603896835653" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1605978534093">
+    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1606055513636">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1605978534093" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1606055513636" />
     <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1603896835651" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1605978534092">
+    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1606055513635">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1605978534092" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1606055513635" />
     <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1603896835650" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1605978534094">
+    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1606055513637">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1605978534094" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1606055513637" />
     <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1603896835652" />
     <state x="258" y="112" key="Maven.ArtifactSearchDialog" timestamp="1603897928099">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="258" y="112" key="Maven.ArtifactSearchDialog/0.0.1440.900@0.0.1440.900" timestamp="1603897928099" />
-    <state x="208" y="23" width="1024" height="797" key="SettingsEditor" timestamp="1603898214238">
+    <state x="144" y="79" key="MergeDialog" timestamp="1606051629561">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="208" y="23" width="1024" height="797" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1603898214238" />
+    <state x="144" y="79" key="MergeDialog/0.0.1440.900@0.0.1440.900" timestamp="1606051629561" />
+    <state x="361" y="218" key="MultipleFileMergeDialog" timestamp="1606051629597">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="361" y="218" key="MultipleFileMergeDialog/0.0.1440.900@0.0.1440.900" timestamp="1606051629597" />
+    <state x="208" y="23" width="1024" height="797" key="SettingsEditor" timestamp="1606056714280">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="208" y="23" width="1024" height="797" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1606056714280" />
     <state x="208" y="43" key="SettingsEditor/0.23.1440.797@0.23.1440.797" timestamp="1603897648050" />
     <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1603890553944">
       <screen x="0" y="0" width="1440" height="900" />
@@ -211,5 +225,9 @@
       <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="533" y="371" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1440.797@0.23.1440.797" timestamp="1605976280636" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1606054569531">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1606054569531" />
   </component>
 </project>
