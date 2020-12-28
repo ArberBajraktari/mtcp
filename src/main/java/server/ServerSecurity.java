@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ServerSecurity {
+public abstract class ServerSecurity {
 
     static private Map<String, String> usersLogged = new HashMap<>();
     static private List<String> usersTokens = new ArrayList<>();
