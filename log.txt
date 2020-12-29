@@ -1,0 +1,10 @@
+logged: Package is created successfully!
+logged: Could not create Package. Package need 5 cards to be created, and there were either more or less inserted!
+logged: Package:
+logged: 845f0dc7-37d0-426e-994e-43fc3ac83c08: WaterGoblin - 10.0dmg - NOT_SET
+logged: 99f8f8dc-e25e-4a95-aa2c-782823f36e2a: Dragon - 50.0dmg - NOT_SET
+logged: e85e3976-7c86-4d06-9a80-641c2019a79f: WaterSpell - 20.0dmg - WATER
+logged: 1cb6ab86-bdb2-47e5-b6e4-68c5ab389334: Ork - 45.0dmg - NOT_SET
+logged: dfdd758f-649c-40f9-ba3a-8657f4b3439f: FireSpell - 25.0dmg - FIRE
+logged: Package is created successfully!
+logged: Could not create Package. Package need 5 cards to be created, and there were either more or less inserted!

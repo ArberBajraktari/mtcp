@@ -6,8 +6,8 @@ import java.util.Map;
 
 public abstract class ServerSecurity {
 
-    static private Map<String, String> usersLogged = new HashMap<>();
-    static private List<String> usersTokens = new ArrayList<>();
+    static private final Map<String, String> usersLogged = new HashMap<>();
+    static private final List<String> usersTokens = new ArrayList<>();
 
     static protected void addLoggedUser(String username, String password){
         usersLogged.put(username, password);

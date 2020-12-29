@@ -4,10 +4,11 @@ package card_packs.card;
 
 public class Card {
 
-    protected String __name;
-    protected double __damage;
-    protected ELEMENT __elementType;
-    protected CARDTYPE __cardType;
+    private final String __name;
+    private String __id;
+    private double __damage;
+    private ELEMENT __elementType;
+    private CARDTYPE __cardType;
 
     public Card() {
         this.__damage = 10.0;
@@ -16,13 +17,13 @@ public class Card {
         __cardType = CARDTYPE.NOT_SET;
     }
 
-    public Card(String name, double damage) {
+    public Card(String id, String name, double damage) {
             this.__name = name;
             this.__damage = damage;
-            configureCard(name);
+            configureCard(id, name, damage);
     }
 
-    private void configureCard(String name){
+    public void configureCard(String id, String name, double damage){
         if(name.contains("Fire") || name.contains("Water") || name.contains("Regular")){
             if(name.contains("Spell")){
                 __cardType = CARDTYPE.SPELL;
@@ -34,16 +35,27 @@ public class Card {
                     __elementType = ELEMENT.NORMAL;
                 }
             }else{
+                __elementType = ELEMENT.NOT_SET;
                 __cardType = CARDTYPE.MONSTER;
             }
         }else{
             __cardType = CARDTYPE.MONSTER;
             __elementType = ELEMENT.NOT_SET;
         }
+        __id = id;
+        __damage = damage;
     }
 
-    public String get_name() {
+    public String getName() {
         return __name;
+    }
+
+    public String getId(){
+        return __id;
+    }
+
+    public double getDamage() {
+        return __damage;
     }
 
     public String getElementType(){

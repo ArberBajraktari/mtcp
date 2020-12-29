@@ -2,6 +2,10 @@ package server;
 
 import client.Client;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class Server extends ServerSecurity{
     private Client _client;
@@ -78,6 +82,26 @@ public class Server extends ServerSecurity{
         //return either false or true
 
         return false;
+    }
+
+    public static void log(String msg){
+        File file = new File("log.txt");
+
+        // creates the file
+        try {
+            file.createNewFile();
+            // creates a FileWriter Object
+            FileWriter writer = new FileWriter(file, true);
+
+            // Writes the content to the file
+            writer.write("logged: " + msg + "\n");
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
