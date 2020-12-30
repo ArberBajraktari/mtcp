@@ -6,7 +6,7 @@ public class Card {
 
     private final String __name;
     private String __id;
-    private double __damage;
+    private final double __damage;
     private ELEMENT __elementType;
     private CARDTYPE __cardType;
 
@@ -20,10 +20,10 @@ public class Card {
     public Card(String id, String name, double damage) {
             this.__name = name;
             this.__damage = damage;
-            configureCard(id, name, damage);
+            configureCard(id, name);
     }
 
-    public void configureCard(String id, String name, double damage){
+    public void configureCard(String id, String name){
         if(name.contains("Fire") || name.contains("Water") || name.contains("Regular")){
             if(name.contains("Spell")){
                 __cardType = CARDTYPE.SPELL;
@@ -43,7 +43,6 @@ public class Card {
             __elementType = ELEMENT.NOT_SET;
         }
         __id = id;
-        __damage = damage;
     }
 
     public String getName() {

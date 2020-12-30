@@ -1,5 +1,6 @@
 package client;
 import card_packs.Deck;
+import card_packs.Package;
 import card_packs.Stack;
 import server.Server;
 
@@ -17,8 +18,8 @@ public class Client implements IPlayable{
     private Server _server;
 
     private Package _package;
-    private Stack _stack;
-    private Deck _deck;
+    private Deck _deck = new Deck();
+    private Stack _stack = new Stack();
 
 
     public Client(){
@@ -36,10 +37,8 @@ public class Client implements IPlayable{
         this._password = password;
     }
 
-
-
-
     //show client profile
+    @SuppressWarnings("unused")
     public void showProfile(){
         System.out.println("Users profile:");
         System.out.println("\r\tUsername: " + _username);
@@ -48,5 +47,26 @@ public class Client implements IPlayable{
     }
 
 
+    public void buyPackage(String jsonText){
+        if(isCoinsValid()){
+            _package = new Package(jsonText);
+        }
+        if(_package.isCreated()){
+            _coins -= 5;
+        }
+        _stack.appendPackage(_package);
+        _package = null;
+    }
+
+    public boolean isCoinsValid(){
+        if(_coins >= 5){
+            return true;
+        }
+        return false;
+    }
+
+    public int getCoins(){
+        return _coins;
+    }
 
 }
