@@ -29,12 +29,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fe097ad7-7942-46a6-9d26-a71464fb868e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/card_packs/Package.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/card_packs/Package.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/server/ServerSecurity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/ServerSecurity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/MtcpTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MtcpTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +153,7 @@
       <workItem from="1609186115638" duration="7341000" />
       <workItem from="1609274270431" duration="6580000" />
       <workItem from="1609343817072" duration="8304000" />
-      <workItem from="1609617531679" duration="9523000" />
+      <workItem from="1609617531679" duration="9969000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1603890543886</created>
@@ -196,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609281104077</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Made the connection with PostGreSQL und created the tables&#10;for the data to be saved.&#10;Logic of packages and user cards created.">
+      <created>1609629134738</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1609629134738</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,17 +229,17 @@
             <list>
               <RecentGroup>
                 <option name="FILTER_VALUES">
+                  <option value="origin/master" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
                   <option value="master" />
                 </option>
               </RecentGroup>
               <RecentGroup>
                 <option name="FILTER_VALUES">
                   <option value="dev" />
-                </option>
-              </RecentGroup>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="origin/master" />
                 </option>
               </RecentGroup>
               <RecentGroup>
@@ -258,7 +259,8 @@
     <MESSAGE value="Server and ServerSecurity methods are defined. UML udated." />
     <MESSAGE value="Card Class is almost done, only changes that will be made with time. Deleted Monster and Spell class as they were not needed. Also finished the testing methods for the Card class." />
     <MESSAGE value="Package Class is configured with some test cases too. Package created from JSON string." />
-    <option name="LAST_COMMIT_MESSAGE" value="Package Class is configured with some test cases too. Package created from JSON string." />
+    <MESSAGE value="Made the connection with PostGreSQL und created the tables&#10;for the data to be saved.&#10;Logic of packages and user cards created." />
+    <option name="LAST_COMMIT_MESSAGE" value="Made the connection with PostGreSQL und created the tables&#10;for the data to be saved.&#10;Logic of packages and user cards created." />
   </component>
   <component name="WindowStateProjectService">
     <state x="208" y="23" key="#Project_Structure" timestamp="1609188735078">
@@ -294,34 +296,34 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900@0.0.1440.900" timestamp="1609195376898" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1609628541576">
-      <screen x="0" y="23" width="1440" height="801" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1609629140086">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1609628390646" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1609629140086" />
     <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1603896835653" />
     <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1609277893305" />
     <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.801@0.23.1440.801" timestamp="1609628541576" />
     <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.804@0.23.1440.804" timestamp="1609280397555" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1609628541572">
-      <screen x="0" y="23" width="1440" height="801" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1609629140083">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1609628390644" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1609629140083" />
     <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1603896835651" />
     <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1609277893302" />
     <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.801@0.23.1440.801" timestamp="1609628541572" />
     <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.804@0.23.1440.804" timestamp="1609280397553" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1609628541568">
-      <screen x="0" y="23" width="1440" height="801" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1609629140081">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1609628390642" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1609629140081" />
     <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1603896835650" />
     <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1609277893297" />
     <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.801@0.23.1440.801" timestamp="1609628541568" />
     <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.804@0.23.1440.804" timestamp="1609280397550" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1609628541574">
-      <screen x="0" y="23" width="1440" height="801" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1609629140084">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1609628390645" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1609629140084" />
     <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1603896835652" />
     <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1609277893303" />
     <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.801@0.23.1440.801" timestamp="1609628541574" />
@@ -343,10 +345,10 @@
     </state>
     <state x="208" y="23" width="1024" height="797" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1606056714280" />
     <state x="208" y="43" key="SettingsEditor/0.23.1440.797@0.23.1440.797" timestamp="1603897648050" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1609281108055">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1609629138337">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1609281108055" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1609629138337" />
     <state x="443" y="321" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1603893223750">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
