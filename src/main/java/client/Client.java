@@ -2,6 +2,7 @@ package client;
 import card_packs.Deck;
 import card_packs.Package;
 import card_packs.Stack;
+import server.PostGre;
 import server.Server;
 
 
@@ -16,8 +17,8 @@ public class Client implements IPlayable{
     private MODE _stance = MODE.ATTACK;
 
     private Server _server;
+    private PostGre _db = new PostGre();
 
-    private Package _package;
     private Deck _deck = new Deck();
     private Stack _stack = new Stack();
 
@@ -32,7 +33,6 @@ public class Client implements IPlayable{
     }
 
     public Client(String username, String password){
-        new Client();
         this._username = username;
         this._password = password;
     }
@@ -46,16 +46,24 @@ public class Client implements IPlayable{
         System.out.println("\r\tElo Rating: " + _eloRating);
     }
 
+    public boolean signUp(String username, String password) {
+        //save to DB
+        return true;
+    }
 
-    public void buyPackage(String jsonText){
+    public boolean logIn(String username, String password){
+        //get from DB
+        return true;
+    }
+
+
+    public void buyPackage(){
         if(isCoinsValid()){
-            _package = new Package(jsonText);
+            //TODO: buy package, change database rows.
+            _db.buyPackage(_username);
+        }else{
+            System.out.println("Not enough money!");
         }
-        if(_package.isCreated()){
-            _coins -= 5;
-        }
-        _stack.appendPackage(_package);
-        _package = null;
     }
 
     public boolean isCoinsValid(){

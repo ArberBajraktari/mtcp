@@ -6,6 +6,8 @@ import java.util.Map;
 
 public abstract class ServerSecurity {
 
+    //ToDo: me e ba me Database PostGRES
+
     static private final Map<String, String> usersLogged = new HashMap<>();
     static private final List<String> usersTokens = new ArrayList<>();
 

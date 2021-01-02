@@ -6,14 +6,17 @@ import card_packs.card.ELEMENT;
 import card_packs.Package;
 import client.Client;
 import org.junit.jupiter.api.Test;
+import server.PostGre;
+
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MtcpTest {
-    public static Card monster = new Card("id1:", "Dragon", 10.0);
-    public static Card spell1 = new Card("id2:", "FireSpell", 11.0);
-    public static Card spell2 = new Card("id3:", "WaterSpell", 11.0);
-    public static Card spell3 = new Card("id4:", "RegularSpell", 11.0);
+    public static Card monster = new Card("id1", "Dragon", 10.0);
+    public static Card spell1 = new Card("id2", "FireSpell", 11.0);
+    public static Card spell2 = new Card("id3", "WaterSpell", 11.0);
+    public static Card spell3 = new Card("id4", "RegularSpell", 11.0);
 
     @Test
     void configureCardMonsterTest() {
@@ -77,13 +80,13 @@ public class MtcpTest {
 
     @Test
     void clientBuyPackageTest() {
+
+    }
+
+    @Test
+    void postGreTest() {
+        PostGre db = new PostGre();
         Client user = new Client();
-        user.buyPackage("[{\"Id\":\"845f0dc7-37d0-426e-994e-43fc3ac83c08\", \"Name\":\"WaterGoblin\", \"Damage\": 10.0}, {\"Id\":\"99f8f8dc-e25e-4a95-aa2c-782823f36e2a\", \"Name\":\"Dragon\", \"Damage\": 50.0}, {\"Id\":\"e85e3976-7c86-4d06-9a80-641c2019a79f\", \"Name\":\"WaterSpell\", \"Damage\": 20.0}, {\"Id\":\"1cb6ab86-bdb2-47e5-b6e4-68c5ab389334\", \"Name\":\"Ork\", \"Damage\": 45.0}, {\"Id\":\"dfdd758f-649c-40f9-ba3a-8657f4b3439f\", \"Name\":\"FireSpell\",    \"Damage\": 25.0}]");
-        assertEquals(15, user.getCoins());
-        user.buyPackage("[{\"Id\":\"99f8f8dc-e25e-4a95-aa2c-782823f36e2a\", \"Name\":\"Dragon\", \"Damage\": 50.0}, {\"Id\":\"e85e3976-7c86-4d06-9a80-641c2019a79f\", \"Name\":\"WaterSpell\", \"Damage\": 20.0}, {\"Id\":\"1cb6ab86-bdb2-47e5-b6e4-68c5ab389334\", \"Name\":\"Ork\", \"Damage\": 45.0}, {\"Id\":\"dfdd758f-649c-40f9-ba3a-8657f4b3439f\", \"Name\":\"FireSpell\",    \"Damage\": 25.0}]");
-        assertEquals(15, user.getCoins());
-        user.buyPackage("[{\"Id\":\"845f0dc7-37d0-426e-994e-43fc3ac83c08\", \"Name\":\"WaterGoblin\", \"Damage\": 10.0}, {\"Id\":\"99f8f8dc-e25e-4a95-aa2c-782823f36e2a\", \"Name\":\"Dragon\", \"Damage\": 50.0}, {\"Id\":\"e85e3976-7c86-4d06-9a80-641c2019a79f\", \"Name\":\"WaterSpell\", \"Damage\": 20.0}, {\"Id\":\"1cb6ab86-bdb2-47e5-b6e4-68c5ab389334\", \"Name\":\"Ork\", \"Damage\": 45.0}, {\"Id\":\"dfdd758f-649c-40f9-ba3a-8657f4b3439f\", \"Name\":\"FireSpell\",    \"Damage\": 25.0}]");
-        assertEquals(10, user.getCoins());
     }
 
 }
