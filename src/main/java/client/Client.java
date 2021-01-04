@@ -2,6 +2,8 @@ package client;
 import card_packs.Deck;
 import card_packs.Package;
 import card_packs.Stack;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import server.PostGre;
 import server.Server;
 
@@ -14,6 +16,9 @@ public class Client implements IPlayable{
     private int _coins;
     private int _eloRating;
     private boolean _logged;
+    private String _bio;
+    private String _img;
+
     private MODE _stance = MODE.ATTACK;
 
     private Server _server;
@@ -24,17 +29,43 @@ public class Client implements IPlayable{
 
 
     public Client(){
-        //default client
-        _username = "Max";
-        _password = "password";
         _coins = 20;
         _eloRating = 0;
         _logged = false;
+        _bio = "hello";
+        _img = ":)";
     }
 
-    public Client(String username, String password){
-        this._username = username;
-        this._password = password;
+    public Client(String json){
+        this();
+        JSONObject _jsonUser = new JSONObject(json);
+        _username = _jsonUser.getString("Username");
+        _password = _jsonUser.getString("Password");
+    }
+
+
+    public int getEloRating() {
+        return _eloRating;
+    }
+
+    public boolean isLogged() {
+        return _logged;
+    }
+
+    public String getUsername() {
+        return _username;
+    }
+
+    public String getPassword() {
+        return _password;
+    }
+
+    public String getBio() {
+        return _bio;
+    }
+
+    public String getImg() {
+        return _img;
     }
 
     //show client profile

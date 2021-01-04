@@ -18,6 +18,39 @@ public class PostGre {
         }
     }
 
+    public int register(Client user){
+        try {
+            PreparedStatement st2 = connection.prepareStatement( "SELECT * FROM users where username = ?" );
+            st2.setString(1, user.getUsername());
+            ResultSet rs = st2.executeQuery();
+            if(rs.next()){
+                System.out.println("Already exists!");
+                return 1;
+            }else{
+                PreparedStatement st = connection.prepareStatement("INSERT INTO users (username, password, coins, elorating, logged, bio, img) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                st.setString(1, user.getUsername());
+                st.setString(2, user.getPassword());
+                st.setInt(3, user.getCoins());
+                st.setInt(4, user.getEloRating());
+                st.setBoolean(5, user.isLogged());
+                System.out.println(user.getBio());
+                st.setString(6, user.getBio());
+                st.setString(7, user.getImg());
+                st.executeUpdate();
+                st.close();
+                return 0;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 1;
+    }
+
+    public void logIn(String username, String password){
+
+    }
+
     public void insertCard(int id, Card card) {
         //get biggest ID
         //increment with 1

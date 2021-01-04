@@ -4,6 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+enum Verb {
+    GET,
+    POST,
+    PUT,
+    DELETE,
+    OTHER
+}
+
+
 public abstract class ServerSecurity {
 
     //ToDo: me e ba me Database PostGRES
@@ -15,6 +25,8 @@ public abstract class ServerSecurity {
         usersLogged.put(username, password);
         usersTokens.add(username + "-mtcgToken");
     }
+
+
 
     static protected boolean isUserLogged(String username, String password){
         for (Map.Entry<String, String> entry : usersLogged.entrySet()) {
