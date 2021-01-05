@@ -15,13 +15,10 @@ public class Package {
         jsonText = tripleToSingle(jsonText);
         _jsonCardArray = new JSONArray(jsonText);
         if(isCreated()){
-            PostGre db = new PostGre();
-            int id = db.getMaxId();
             for(int i=0; i < _jsonCardArray.length(); i++)
             {
                 JSONObject tempCard = _jsonCardArray.getJSONObject(i);
                 _packageCards[i] = new Card(tempCard.getString("Id"), tempCard.getString("Name"), tempCard.getDouble("Damage"));
-                db.insertCard(id+1, _packageCards[i]);
             }
         }
     }
@@ -49,6 +46,16 @@ public class Package {
             System.out.println("Cannot show Package because it is empty!");
         }
 
+    }
+
+    public void savePackage(){
+        PostGre db = new PostGre();
+        int id = db.getMaxId();
+        for(int i=0; i < _jsonCardArray.length(); i++) {
+            db.insertCardToPackage(id+1, _packageCards[i]);
+        }
+        System.out.println("Package is saved in the Database!");
+        Server.log("Package is saved in the Database!");
     }
 
     private String tripleToSingle(String jsonText){

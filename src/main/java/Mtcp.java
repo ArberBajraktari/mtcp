@@ -9,7 +9,6 @@ import java.util.List;
 
 public class Mtcp{
     public static Server server = new Server();
-    //public static Client client = new Client();
 
     static ServerSocket _sSocket = null;
     static final int _port = 10001;

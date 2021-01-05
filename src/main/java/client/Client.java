@@ -22,7 +22,7 @@ public class Client implements IPlayable{
     private MODE _stance = MODE.ATTACK;
 
     private Server _server;
-    private PostGre _db = new PostGre();
+    private PostGre _db;
 
     private Deck _deck = new Deck();
     private Stack _stack = new Stack();
@@ -90,7 +90,6 @@ public class Client implements IPlayable{
 
     public void buyPackage(){
         if(isCoinsValid()){
-            //TODO: buy package, change database rows.
             _db.buyPackage(_username);
         }else{
             System.out.println("Not enough money!");

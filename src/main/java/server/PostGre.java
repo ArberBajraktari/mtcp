@@ -2,6 +2,7 @@ package server;
 
 import card_packs.card.Card;
 import client.Client;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 
@@ -11,47 +12,127 @@ public class PostGre {
     public PostGre(){
         try {
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kinaski", "kinaski", "postgres");
-            System.out.println("Connected to PostgreSQL database!");
         } catch (SQLException e) {
             System.out.println("Connection failure.");
             e.printStackTrace();
         }
     }
 
-    public int register(Client user){
+    public int registerUser(Client user){
         try {
-            PreparedStatement st2 = connection.prepareStatement( "SELECT * FROM users where username = ?" );
-            st2.setString(1, user.getUsername());
-            ResultSet rs = st2.executeQuery();
+            PreparedStatement user_exst = connection.prepareStatement( "SELECT * FROM users where username = ?" );
+            user_exst.setString(1, user.getUsername());
+            ResultSet rs = user_exst.executeQuery();
             if(rs.next()){
                 System.out.println("Already exists!");
-                return 1;
+                return 0;
             }else{
                 PreparedStatement st = connection.prepareStatement("INSERT INTO users (username, password, coins, elorating, logged, bio, img) VALUES (?, ?, ?, ?, ?, ?, ?)");
                 st.setString(1, user.getUsername());
-                st.setString(2, user.getPassword());
+                st.setString(2, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
                 st.setInt(3, user.getCoins());
                 st.setInt(4, user.getEloRating());
                 st.setBoolean(5, user.isLogged());
-                System.out.println(user.getBio());
                 st.setString(6, user.getBio());
                 st.setString(7, user.getImg());
                 st.executeUpdate();
                 st.close();
-                return 0;
+                return 1;
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return 1;
+        return 0;
     }
 
-    public void logIn(String username, String password){
+    public int deleteUser(String username){
+        PreparedStatement st;
+        try {
+            PreparedStatement user_exst = connection.prepareStatement( "SELECT * FROM users where username = ?" );
+            user_exst.setString(1, username);
+            ResultSet rs = user_exst.executeQuery();
+            if(rs.next()){
+                st = connection.prepareStatement("DELETE FROM users WHERE USERNAME = ?");
+                st.setString(1, username);
+                st.executeUpdate();
+                st.close();
+                return 1;
+            }else{
+                return 0;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
 
     }
 
-    public void insertCard(int id, Card card) {
+    public boolean isLogged(String username){
+        PreparedStatement user_exst = null;
+        try {
+            user_exst = connection.prepareStatement( "SELECT logged FROM users where username = ?" );
+            user_exst.setString(1, username);
+            ResultSet rs = user_exst.executeQuery();
+            if(rs.next()){
+                if(rs.getBoolean("logged")){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else {
+                return false;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+    public int deleteUser(Client user){
+        return deleteUser(user.getUsername());
+    }
+
+    public int logInUser(Client user) {
+
+        PreparedStatement stm = null;
+        try {
+            PreparedStatement user_exst = connection.prepareStatement( "SELECT password FROM users where username = ?" );
+            user_exst.setString(1, user.getUsername());
+            ResultSet rs = user_exst.executeQuery();
+            if(rs.next()){
+                if(BCrypt.checkpw(user.getPassword(), rs.getString("password"))){
+                    stm = connection.prepareStatement( "UPDATE users set logged = ? WHERE username = ?" );
+                    stm.setBoolean(1, true);
+                    stm.setString(2, user.getUsername());
+                    int count = stm.executeUpdate();
+                    stm.close();
+                    if(count > 0) {
+                        return 1;
+                    }else{
+                        return 0;
+                    }
+                }
+            }else{
+                return 0;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getIdFromUsername(String username) throws SQLException {
+        PreparedStatement user_exst = connection.prepareStatement( "SELECT user_id FROM users where username = ?" );
+        user_exst.setString(1, username);
+        ResultSet rs = user_exst.executeQuery();
+        if(rs.next()){
+            return rs.getInt("user_id");
+        }
+        return 0;
+    }
+
+    public void insertCardToPackage(int id, Card card) {
         //get biggest ID
         //increment with 1
         //add 4 cards

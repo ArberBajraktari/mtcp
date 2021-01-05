@@ -1,5 +1,6 @@
 package server;
 
+import card_packs.Package;
 import client.Client;
 
 import java.io.*;
@@ -7,10 +8,8 @@ import java.net.Socket;
 import java.util.*;
 
 
-public class Server extends ServerSecurity{
-    private Client _client;
-    private Battlefield _battlefield;
-    private final PostGre _db = new PostGre();
+public class Server{
+    private PostGre _db = new PostGre();
     private BufferedReader _in;
     private BufferedWriter _out;
     private StringBuilder _messageSeparator = new StringBuilder();
@@ -88,7 +87,7 @@ public class Server extends ServerSecurity{
                 } else {
 
                     //saving the header
-                    if(line.contains(": ")){
+                    if(line.contains(": ") && !line.contains("{")){
                         String[] other_lines = line.split(": ");
                         __header.put(other_lines[0], other_lines[1]);
                     }
@@ -131,7 +130,9 @@ public class Server extends ServerSecurity{
     }
 
 
-    //1 - wrong request
+    //1 - create account
+    //2 - log in
+    //3 - add new package
     private int checkRequest(){
         log("srv: Checking for errors...");
 
@@ -144,6 +145,10 @@ public class Server extends ServerSecurity{
             if(Arrays.asList(_allowedReq).contains(_command[1])){
                 if(_command[1].equals("users")){
                     return 1;
+                }else if(_command[1].equals("sessions")){
+                    return 2;
+                }else if(_command[1].equals("packages")){
+                    return 3;
                 }
                 if(_command.length == 3){
                     if(_command[1].equals("transactions") && _command[2].equals("packages")){
@@ -175,23 +180,56 @@ public class Server extends ServerSecurity{
             case 1:
                 createUser(_payload);
                 break;
+            case 2:
+                logInUser(_payload);
+                break;
+            case 3:
+                savePackage(_payload);
         }
         _out.flush();
     }
+
     //depending on requestMode
     private void createUser(String json) throws IOException {
         Client user = new Client(json);
-        if(_db.register(user)==0){
+        if(_db.registerUser(user)==1){
             _out.write("New user is created\n");
             log("New user is created.");
         }else{
             _out.write("Username already exists\n");
         }
     }
-    private void logInUser(){
 
+    private void logInUser(String json) throws IOException {
+        Client user = new Client(json);
+        _db.logInUser(user);
+        if(_db.logInUser(user)==0){
+            _out.write("Can't log user in\n");
+            log("Can't log user in");
+        }else{
+            _out.write("User is logged.\n");
+            log("User is logged.");
+        }
     }
-    private void createPackage(){
+    private void savePackage(String json) throws IOException {
+        String[] token = __header.get("Authorization").split(" ");
+        String[] uname = token[1].split("-");
+        if(uname[0].equals("admin")){
+            if(_db.isLogged(uname[0])){
+                if(uname[1].contains("mtcgToken")){
+                    Package p = new Package(json);
+                    if(p.isCreated()){
+                        p.savePackage();
+                    }
+                }else{
+                    _out.write("The token is wrong");
+                }
+            }else{
+                _out.write("The user is not an logged");
+            }
+        }else{
+            _out.write("The user is not an admin");
+        }
 
     }
     private void buyPackage(){
@@ -219,15 +257,6 @@ public class Server extends ServerSecurity{
     }
     private void trade(){
 
-    }
-
-    //check what the request wants to do
-    public boolean toCreateUser(){
-
-
-        //return either false or true
-
-        return false;
     }
 
     public static void log(String msg){

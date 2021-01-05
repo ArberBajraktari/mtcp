@@ -23,20 +23,22 @@
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:origin/dev" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe097ad7-7942-46a6-9d26-a71464fb868e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Mtcp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Mtcp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/card_packs/Package.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/card_packs/Package.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/PostGre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/PostGre.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/server/ServerSecurity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/ServerSecurity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/ServerSecurity.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/MtcpTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MtcpTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,8 +50,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -107,14 +109,14 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/java" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/card_packs" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.Mtcp">
+  <component name="RunManager" selected="JUnit.MtcpTest">
     <configuration name="Mtcp" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Mtcp" />
       <module name="mtcp" />
@@ -122,15 +124,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -144,9 +144,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MtcpTest.stackTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mtcp" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MtcpTest" />
+      <option name="METHOD_NAME" value="stackTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MtcpTest.userLoggedTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mtcp" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MtcpTest" />
+      <option name="METHOD_NAME" value="userLoggedTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.MtcpTest" />
+        <item itemvalue="JUnit.MtcpTest.userLoggedTest" />
+        <item itemvalue="JUnit.MtcpTest.stackTest" />
       </list>
     </recent_temporary>
   </component>
@@ -174,6 +196,7 @@
       <workItem from="1609617531679" duration="10024000" />
       <workItem from="1609717901315" duration="1392000" />
       <workItem from="1609719602421" duration="9134000" />
+      <workItem from="1609796881577" duration="8717000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1603890543886</created>
@@ -242,6 +265,17 @@
               <option name="HIGHLIGHTERS">
                 <map>
                   <entry key="MERGE_COMMITS" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/dev" />
+                      </list>
+                    </value>
+                  </entry>
                 </map>
               </option>
             </State>
@@ -325,42 +359,43 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900@0.0.1440.900" timestamp="1609195376898" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1609729555947">
-      <screen x="0" y="23" width="1440" height="801" />
-    </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1609729381819" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1603896835653" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1609277893305" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.801@0.23.1440.801" timestamp="1609729555947" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.804@0.23.1440.804" timestamp="1609280397555" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1609729555943">
-      <screen x="0" y="23" width="1440" height="801" />
-    </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1609729381815" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1603896835651" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1609277893302" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.801@0.23.1440.801" timestamp="1609729555943" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.804@0.23.1440.804" timestamp="1609280397553" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1609729555940">
-      <screen x="0" y="23" width="1440" height="801" />
-    </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1609729381813" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1603896835650" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1609277893297" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.801@0.23.1440.801" timestamp="1609729555940" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.804@0.23.1440.804" timestamp="1609280397550" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1609729555945">
-      <screen x="0" y="23" width="1440" height="801" />
-    </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1609729381816" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1603896835652" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1609277893303" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.801@0.23.1440.801" timestamp="1609729555945" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.804@0.23.1440.804" timestamp="1609280397554" />
-    <state x="258" y="112" key="Maven.ArtifactSearchDialog" timestamp="1609275154403">
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1609805791581">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="258" y="112" key="Maven.ArtifactSearchDialog/0.0.1440.900@0.0.1440.900" timestamp="1609275154403" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1609805791581" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1603896835653" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1609277893305" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.801@0.23.1440.801" timestamp="1609804820079" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.804@0.23.1440.804" timestamp="1609797268994" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1609805791577">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1609805791577" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1603896835651" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1609277893302" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.801@0.23.1440.801" timestamp="1609804820075" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.804@0.23.1440.804" timestamp="1609797268990" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1609805791575">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1609805791575" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1603896835650" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1609277893297" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.801@0.23.1440.801" timestamp="1609804820073" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.804@0.23.1440.804" timestamp="1609797268987" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1609805791578">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1609805791578" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.23.1440.801" timestamp="1609801867448" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1603896835652" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1609277893303" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.801@0.23.1440.801" timestamp="1609804820077" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.804@0.23.1440.804" timestamp="1609797268993" />
+    <state x="258" y="112" key="Maven.ArtifactSearchDialog" timestamp="1609797831961">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="258" y="112" key="Maven.ArtifactSearchDialog/0.0.1440.900@0.0.1440.900" timestamp="1609797831961" />
     <state x="144" y="79" key="MergeDialog" timestamp="1606051629561">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -387,10 +422,10 @@
     </state>
     <state x="533" y="371" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1440.797@0.23.1440.797" timestamp="1605976280636" />
     <state x="533" y="373" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1440.801@0.23.1440.801" timestamp="1609627940437" />
-    <state x="0" y="23" width="1440" height="797" key="dock-window-1" timestamp="1609721967927">
+    <state x="0" y="0" width="1440" height="900" key="dock-window-1" timestamp="1609796895795">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="0" y="23" width="1440" height="797" key="dock-window-1/0.0.1440.900@0.0.1440.900" timestamp="1609721967927" />
+    <state x="0" y="0" width="1440" height="900" key="dock-window-1/0.0.1440.900@0.0.1440.900" timestamp="1609796895795" />
     <state x="458" y="205" key="extract.method.dialog" timestamp="1609346457510">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

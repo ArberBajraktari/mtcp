@@ -8,8 +8,6 @@ import client.Client;
 import org.junit.jupiter.api.Test;
 import server.PostGre;
 
-import java.sql.SQLException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MtcpTest {
@@ -79,15 +77,42 @@ public class MtcpTest {
     }
 
     @Test
-    void clientBuyPackageTest() {
+    void userRegisterTest() {
+        PostGre db = new PostGre();
+        Client user = new Client("{\"Username\":\"test\", \"Password\":\"test\"}");
+        assertEquals(1, db.registerUser(user));
+        assertEquals(0, db.registerUser(user));
 
     }
 
     @Test
-    void postGreTest() {
+    void deleteUserTest() {
         PostGre db = new PostGre();
-        Client user = new Client();
+        Client user = new Client("{\"Username\":\"test\", \"Password\":\"test\"}");
+        assertEquals(1, db.deleteUser(user));
+        Client user2 = new Client("{\"Username\":\"tes234t\", \"Password\":\"tes234t\"}");
+        assertEquals(0, db.deleteUser(user2));
+    }
 
+    @Test
+    void userLogInTest() {
+        PostGre db = new PostGre();
+        Client user = new Client("{\"Username\":\"test2\", \"Password\":\"tes2\"}");
+        Client user2 = new Client("{\"Username\":\"test3\", \"Password\":\"test3\"}");
+        db.registerUser(user);
+        assertEquals(1, db.logInUser(user));
+        assertEquals(0, db.logInUser(user2));
+        db.deleteUser(user);
+    }
+
+    @Test
+    void userLoggedTest() {
+        PostGre db = new PostGre();
+        Client user = new Client("{\"Username\":\"login\", \"Password\":\"login\"}");
+        assertEquals(1, db.registerUser(user));
+        assertEquals(1, db.logInUser(user));
+        assertTrue(db.isLogged(user.getUsername()));
+        db.deleteUser(user);
     }
 
 }
