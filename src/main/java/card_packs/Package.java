@@ -62,14 +62,16 @@ public class Package {
         return jsonText.replace("\\\"" , "\"");
     }
 
-    static void showCards(Card[] deckCards) {
+    static String showCards(Card[] deckCards) {
+        StringBuilder str = new StringBuilder("Deck: \n");
         for (Card deckCard : deckCards) {
             Server.log(deckCard.getId() + ": " + deckCard.getName() + " - " + deckCard.getDamage() + "dmg - " + deckCard.getElementType());
-            System.out.print(deckCard.getId() + ": ");
-            System.out.print(deckCard.getName() + " - ");
-            System.out.print(deckCard.getDamage() + "dmg - ");
-            System.out.println(deckCard.getElementType());
+            str.append(deckCard.getId() + ": ");
+            str.append(deckCard.getName() + " - ");
+            str.append(deckCard.getDamage() + "dmg - ");
+            str.append(deckCard.getElementType() + "\n");
         }
+        return str.toString();
     }
 
 

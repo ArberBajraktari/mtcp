@@ -12,19 +12,21 @@ public class Stack {
     public Stack(){
     }
 
-    @SuppressWarnings("unused")
-    public void showStack(){
+    public String getStack(){
+        StringBuilder str = new StringBuilder("Stack: \n");
         for(int i = 0; i < _stackCards.size(); i++) {
             Server.log(_stackCards.get(i).getId() + ": " + _stackCards.get(i).getName() + " - " + _stackCards.get(i).getDamage() + "dmg - " + _stackCards.get(i).getElementType());
-            System.out.print(_stackCards.get(i).getId() + ": ");
-            System.out.print(_stackCards.get(i).getName() + " - ");
-            System.out.print(_stackCards.get(i).getDamage() + "dmg - ");
-            System.out.println(_stackCards.get(i).getElementType());
+            str.append(_stackCards.get(i).getId() + ": ");
+            str.append(_stackCards.get(i).getName() + " - ");
+            str.append(_stackCards.get(i).getDamage() + "dmg - ");
+            str.append(_stackCards.get(i).getElementType() + "\n");
         }
+        return str.toString();
     }
 
-    public void tradeCard(Card card){
-
+    public void addCard(String id, String name, double damage){
+        Card card = new Card(id, name, damage);
+        _stackCards.add(card);
     }
 
     public void appendPackage(Package p_package) {

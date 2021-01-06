@@ -12,7 +12,6 @@ public class Mtcp{
 
     static ServerSocket _sSocket = null;
     static final int _port = 10001;
-    static List<String> __messagesSaved = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         System.out.println("srv: Starting server...");

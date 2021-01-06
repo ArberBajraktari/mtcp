@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.*;
 
 
-public class Server{
+public class Server {
     private PostGre _db = new PostGre();
     private BufferedReader _in;
     private BufferedWriter _out;
@@ -26,11 +26,11 @@ public class Server{
     private String[] _allowedReq = {"users", "sessions", "packages", "transactions", "cards", "deck", "stats", "score", "battles", "tradings"};
 
 
-    public Server(){
+    public Server() {
     }
 //requestMode changed to one of the values below
 
-//1 - create user
+    //1 - create user
 //2 - login user
 //3 - create package
 //4 - acquire(buy) package
@@ -70,13 +70,13 @@ public class Server{
         }
     }
 
-    private void separateMessage(){
+    private void separateMessage() {
         //separate message
         String[] request = _messageSeparator.toString().split(System.getProperty("line.separator"));
         _messageSeparator = new StringBuilder();
         boolean skip = true;
-        for (String line: request){
-            if(!line.isEmpty()){
+        for (String line : request) {
+            if (!line.isEmpty()) {
                 if (_http_first_line) {
                     //saving folder and version
                     String[] first_line = line.split(" ");
@@ -87,17 +87,17 @@ public class Server{
                 } else {
 
                     //saving the header
-                    if(line.contains(": ") && !line.contains("{")){
+                    if (line.contains(": ") && !line.contains("{")) {
                         String[] other_lines = line.split(": ");
                         __header.put(other_lines[0], other_lines[1]);
                     }
                     //saving the payload
-                    else{
-                        if (skip){
+                    else {
+                        if (skip) {
                             skip = false;
-                        }else{
-                            _messageSeparator.append( line );
-                            _messageSeparator.append( "\r\n" );
+                        } else {
+                            _messageSeparator.append(line);
+                            _messageSeparator.append("\r\n");
                         }
 
                     }
@@ -119,59 +119,69 @@ public class Server{
         int status = checkRequest();
         performRequest(status);
 
+
     }
 
     @SuppressWarnings("unused")
-    private void showHeader(){
+    private void showHeader() {
         System.out.println("header:");
         for (Map.Entry<String, String> entry : __header.entrySet()) {
-            System.out.println(entry.getKey()+": "+entry.getValue() );
+            System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }
 
 
+    //0 - error occurred
     //1 - create account
     //2 - log in
     //3 - add new package
-    private int checkRequest(){
+    //4 - buy package
+    //5 - show cards from user
+    //6 - show deck
+    private int checkRequest() {
         log("srv: Checking for errors...");
 
         //check if command is supported
-        if(_myVerb == Verb.OTHER){
+        if (_myVerb == Verb.OTHER) {
             System.out.println("srv: Request method not supported");
             return 0;
-        }else {
+        } else {
             _command = _message.split("/");
-            if(Arrays.asList(_allowedReq).contains(_command[1])){
-                if(_command[1].equals("users")){
+            if (Arrays.asList(_allowedReq).contains(_command[1])) {
+                if (_command[1].equals("users") && _myVerb == Verb.POST) {
                     return 1;
-                }else if(_command[1].equals("sessions")){
+                }else if (_command[1].equals("sessions") && _myVerb == Verb.POST) {
                     return 2;
-                }else if(_command[1].equals("packages")){
+                }else if (_command[1].equals("packages") && _myVerb == Verb.POST) {
                     return 3;
+                }else if(_command[1].equals("cards") && _myVerb == Verb.GET){
+                    return 5;
+                }else if(_command[1].equals("deck") && _myVerb == Verb.GET){
+                    return 6;
                 }
-                if(_command.length == 3){
-                    if(_command[1].equals("transactions") && _command[2].equals("packages")){
-                        return 10;
-                    }else{
+                if (_command.length == 3) {
+                    if (_command[1].equals("transactions") && _command[2].equals("packages")) {
+                        if (_command[2].equals("packages") && _myVerb == Verb.POST) {
+                            return 4;
+                        }
+                    } else {
                         return 0;
                     }
                 }
-                return 11;
-            }
-            else{
+                return 0;
+            } else {
                 return 0;
             }
         }
     }
 
     private void performRequest(int status) throws IOException {
-        if(status == 0){
+        if (status == 0) {
             _out.write("HTTP/1.1 400\r\n");
             _out.write("Content-Type: text/html\r\n");
             _out.write("\r\n");
             _out.write("Bad request!\r\n");
-        }else{
+        } else {
             _out.write("HTTP/1.1 200 OK\r\n");
             _out.write("Content-Type: text/html\r\n");
             _out.write("\r\n");
@@ -185,6 +195,17 @@ public class Server{
                 break;
             case 3:
                 savePackage(_payload);
+                break;
+            case 4:
+                buyPackage();
+                break;
+            case 5:
+                showStack();
+                break;
+            case 6:
+                showDeck();
+                break;
+
         }
         _out.flush();
     }
@@ -192,10 +213,10 @@ public class Server{
     //depending on requestMode
     private void createUser(String json) throws IOException {
         Client user = new Client(json);
-        if(_db.registerUser(user)==1){
+        if (_db.registerUser(user) == 1) {
             _out.write("New user is created\n");
             log("New user is created.");
-        }else{
+        } else {
             _out.write("Username already exists\n");
         }
     }
@@ -203,63 +224,108 @@ public class Server{
     private void logInUser(String json) throws IOException {
         Client user = new Client(json);
         _db.logInUser(user);
-        if(_db.logInUser(user)==0){
+        if (_db.logInUser(user) == 0) {
             _out.write("Can't log user in\n");
             log("Can't log user in");
-        }else{
+        } else {
             _out.write("User is logged.\n");
             log("User is logged.");
         }
     }
+
     private void savePackage(String json) throws IOException {
-        String[] token = __header.get("Authorization").split(" ");
-        String[] uname = token[1].split("-");
-        if(uname[0].equals("admin")){
-            if(_db.isLogged(uname[0])){
-                if(uname[1].contains("mtcgToken")){
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
+            if (uname[0].equals("admin")) {
+                if(isUserValid(uname[0], uname[1])){
                     Package p = new Package(json);
-                    if(p.isCreated()){
+                    if (p.isCreated()) {
                         p.savePackage();
                     }
+                    _out.write("New Package is created");
                 }else{
-                    _out.write("The token is wrong");
+                    _out.write("Can not create package");
                 }
-            }else{
-                _out.write("The user is not an logged");
+            } else {
+                _out.write("The user is not an admin");
             }
         }else{
-            _out.write("The user is not an admin");
+            _out.write("No user entered.");
+        }
+    }
+
+    private void buyPackage() throws IOException {
+        if(getUserInfoHeader() != null) {
+            String[] uname = getUserInfoHeader();
+            if (isUserValid(uname[0], uname[1])) {
+                if (_db.buyPackage(uname[0]) == 1) {
+                    _out.write("Package is accuired");
+                } else {
+                    _out.write("Cannot buy package");
+                }
+            } else {
+                _out.write("User is not valid");
+            }
+        }else{
+            _out.write("No user entered.");
         }
 
     }
-    private void buyPackage(){
 
-    }
-    private void showStack(){
-    }
-    private void showDeck(){
+    private void showStack() throws IOException {
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
 
-    }
-    private void showDeckOther(){
-
-    }
-    private void configureDeck(){
-
-    }
-    private void editUser(){
-
-    }
-    private void showStats(){
-
-    }
-    private void showScoreboard(){
-
-    }
-    private void trade(){
-
+            if(isUserValid(uname[0], uname[1])){
+                String stack = _db.getStack(uname[0]);
+                _out.write(stack);
+            }else{
+                _out.write("User is not valid");
+            }
+        }else{
+            _out.write("No user entered.");
+        }
     }
 
-    public static void log(String msg){
+    private void showDeck() throws IOException {
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
+            if(isUserValid(uname[0], uname[1])){
+                String deck = _db.getDeck(uname[0]);
+                _out.write(deck);
+            }else{
+                _out.write("User is not valid");
+            }
+        }else {
+            _out.write("No user entered.");
+        }
+    }
+
+    private void showDeckOther() {
+
+    }
+
+    private void configureDeck() {
+
+    }
+
+    private void editUser() {
+
+    }
+
+    private void showStats() {
+
+    }
+
+    private void showScoreboard() {
+
+    }
+
+    private void trade() {
+
+    }
+
+    public static void log(String msg) {
         File file = new File("log.txt");
 
         // creates the file
@@ -280,4 +346,27 @@ public class Server{
     }
 
 
+    private String[] getUserInfoHeader() {
+        if(__header.get("Authorization") != null){
+            String[] token = __header.get("Authorization").split(" ");
+            return token[1].split("-");
+        }
+        return null;
+
+    }
+
+    private boolean isUserValid(String username, String token) {
+        if (_db.isLogged(username)) {
+            if (token.contains("mtcgToken")) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+    }
+
 }
+

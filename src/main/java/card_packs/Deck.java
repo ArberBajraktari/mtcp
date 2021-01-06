@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 public class Deck {
     private final Card[] _deckCards = new Card[4];
-    private boolean _configured = false;
 
     public Deck(){
         Arrays.fill(_deckCards, null);
@@ -32,14 +31,15 @@ public class Deck {
         return 0;
     }
 
-    @SuppressWarnings("unused")
-    public void showDeck(){
+    public String showDeck(){
         Server.log("Deck:");
         if(checkDeckCreated() == 0){
-            Package.showCards(_deckCards);
+            return Package.showCards(_deckCards);
+
         }else{
             Server.log("Cannot show Deck because it is not created!");
             System.out.println("Cannot show Deck because it is not created!");
+            return null;
         }
     }
 

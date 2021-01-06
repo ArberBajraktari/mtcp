@@ -76,35 +76,12 @@ public class Client implements IPlayable{
         System.out.println("\r\tCoins: " + _coins);
         System.out.println("\r\tElo Rating: " + _eloRating);
     }
-
-    public boolean signUp(String username, String password) {
-        //save to DB
-        return true;
-    }
-
-    public boolean logIn(String username, String password){
-        //get from DB
-        return true;
-    }
-
-
-    public void buyPackage(){
-        if(isCoinsValid()){
-            _db.buyPackage(_username);
-        }else{
-            System.out.println("Not enough money!");
-        }
-    }
-
-    public boolean isCoinsValid(){
-        if(_coins >= 5){
-            return true;
-        }
-        return false;
-    }
-
     public int getCoins(){
         return _coins;
+    }
+
+    public void showStack(){
+
     }
 
 }
