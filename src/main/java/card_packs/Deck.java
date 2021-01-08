@@ -42,9 +42,17 @@ public class Deck {
             return null;
         }
     }
+    public boolean isFull(){
+        for (Card deckCard : _deckCards) {
+            if (deckCard == null) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-    private void configure(){
-
+    public String getCardId(int cardId){
+        return _deckCards[cardId].getId();
     }
 
 

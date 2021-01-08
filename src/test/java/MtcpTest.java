@@ -160,22 +160,19 @@ public class MtcpTest {
         db.deleteUser(user);
     }
 
-//    @Test
-//    void buyPackageTest(){
-//        PostGre db = new PostGre();
-//        Client user = new Client("{\"Username\":\"login\", \"Password\":\"login\"}");
-//        db.registerUser(user);
-//        db.logInUser(user);
-//        Package p = new Package("[{\\\"Id\\\":\\\"845f0dc7-37d0-426e-994e-43fc3ac83c08\\\", \\\"Name\\\":\\\"WaterGoblin\\\", \\\"Damage\\\": 10.0}, {\\\"Id\\\":\\\"99f8f8dc-e25e-4a95-aa2c-782823f36e2a\\\", \\\"Name\\\":\\\"Dragon\\\", \\\"Damage\\\": 50.0}, {\\\"Id\\\":\\\"e85e3976-7c86-4d06-9a80-641c2019a79f\\\", \\\"Name\\\":\\\"WaterSpell\\\", \\\"Damage\\\": 20.0}, {\\\"Id\\\":\\\"1cb6ab86-bdb2-47e5-b6e4-68c5ab389334\\\", \\\"Name\\\":\\\"Ork\\\", \\\"Damage\\\": 45.0}, {\\\"Id\\\":\\\"dfdd758f-649c-40f9-ba3a-8657f4b3439f\\\", \\\"Name\\\":\\\"FireSpell\\\",    \\\"Damage\\\": 25.0}]");
-//        if (p.isCreated()) {
-//            p.savePackage();
-//        }
-//        assertEquals(1, db.buyPackage("login"));
-//        db.deleteCardsFromPackage(1);
-//        db.deleteCardsFromUser("login");
-//        //db.deleteUsersFromTickets("login");
-//        //db.deleteUser(user);
-//    }
+    @Test
+    void buyPackageTest(){
+        PostGre db = new PostGre();
+        Client user = new Client("{\"Username\":\"login\", \"Password\":\"login\"}");
+        db.registerUser(user);
+        db.logInUser(user);
+        Package p = new Package("[{\\\"Id\\\":\\\"845f0dc7-37d0-426e-994e-43fc3ac83c08\\\", \\\"Name\\\":\\\"WaterGoblin\\\", \\\"Damage\\\": 10.0}, {\\\"Id\\\":\\\"99f8f8dc-e25e-4a95-aa2c-782823f36e2a\\\", \\\"Name\\\":\\\"Dragon\\\", \\\"Damage\\\": 50.0}, {\\\"Id\\\":\\\"e85e3976-7c86-4d06-9a80-641c2019a79f\\\", \\\"Name\\\":\\\"WaterSpell\\\", \\\"Damage\\\": 20.0}, {\\\"Id\\\":\\\"1cb6ab86-bdb2-47e5-b6e4-68c5ab389334\\\", \\\"Name\\\":\\\"Ork\\\", \\\"Damage\\\": 45.0}, {\\\"Id\\\":\\\"dfdd758f-649c-40f9-ba3a-8657f4b3439f\\\", \\\"Name\\\":\\\"FireSpell\\\",    \\\"Damage\\\": 25.0}]");
+        if (p.isCreated()) {
+            p.savePackage();
+        }
+        assertEquals(1, db.buyPackage("login"));
+        db.deleteAll();
+    }
 
     @Test
     void getStackTest(){
@@ -193,4 +190,22 @@ public class MtcpTest {
         db.logInUser(user);
         assertEquals("Deck is empty (not configured)", db.getDeck("login"));
     }
+
+    @Test
+    void setDeckTest(){
+        PostGre db = new PostGre();
+        Client user = new Client("{\"Username\":\"login\", \"Password\":\"login\"}");
+        db.registerUser(user);
+        db.logInUser(user);
+        Package p = new Package("[{\\\"Id\\\":\\\"845f0dc7-37d0-426e-994e-43fc3ac83c08\\\", \\\"Name\\\":\\\"WaterGoblin\\\", \\\"Damage\\\": 10.0}, {\\\"Id\\\":\\\"99f8f8dc-e25e-4a95-aa2c-782823f36e2a\\\", \\\"Name\\\":\\\"Dragon\\\", \\\"Damage\\\": 50.0}, {\\\"Id\\\":\\\"e85e3976-7c86-4d06-9a80-641c2019a79f\\\", \\\"Name\\\":\\\"WaterSpell\\\", \\\"Damage\\\": 20.0}, {\\\"Id\\\":\\\"171f6076-4eb5-4a7d-b3f2-2d650cc3d237\\\", \\\"Name\\\":\\\"Ork\\\", \\\"Damage\\\": 45.0}, {\\\"Id\\\":\\\"dfdd758f-649c-40f9-ba3a-8657f4b3439f\\\", \\\"Name\\\":\\\"FireSpell\\\",    \\\"Damage\\\": 25.0}]");
+        if (p.isCreated()) {
+            p.savePackage();
+        }
+        db.buyPackage("login");
+        assertEquals(false, db.setDeck("['SA','asd','ads','asd']", "login"));
+        assertEquals(true, db.setDeck("['845f0dc7-37d0-426e-994e-43fc3ac83c08', '99f8f8dc-e25e-4a95-aa2c-782823f36e2a', 'e85e3976-7c86-4d06-9a80-641c2019a79f', 'dfdd758f-649c-40f9-ba3a-8657f4b3439f']", "login"));
+        db.deleteAll();
+    }
+
+
 }

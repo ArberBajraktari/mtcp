@@ -4,9 +4,12 @@ import card_packs.Deck;
 import card_packs.Stack;
 import card_packs.card.Card;
 import client.Client;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
+import java.util.Iterator;
 
 public class PostGre {
 
@@ -172,10 +175,25 @@ public class PostGre {
         return 0;
     }
 
+    public int getMinId() {
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT package_id FROM packages ORDER BY package_id ASC LIMIT 1" );
+            while (rs.next())
+            {
+                return rs.getInt("package_id");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
     public int buyPackage(String username){
         int id = getIdFromUsername(username);
         int coins = getCoinsFromUsername(username);
-        int pck_id = getMaxId();
+        int pck_id = getMinId();
         if(pck_id != 0 && coins >= 5){
             Card[] cards = getCardsFromPackage(pck_id);
             deleteCardsFromPackage(pck_id);
@@ -349,5 +367,96 @@ public class PostGre {
             throwables.printStackTrace();
         }
         return 0;
+    }
+
+    public boolean setDeck(String cardsJson, String username) {
+        Deck deck = getCardsForDeck(cardsJson, username);
+        if(deck != null){
+            return setDeckForUsername(deck, username);
+        }else{
+            return false;
+        }
+
+    }
+
+    private boolean setDeckForUsername(Deck deck, String username) {
+        try {
+            int id = getIdFromUsername(username);
+            PreparedStatement st = connection.prepareStatement("UPDATE cards set deck = ? WHERE card_id in (?, ?, ?, ?)");
+            st.setInt(1, id);
+            st.setString(2, deck.getCardId(0));
+            st.setString(3, deck.getCardId(1));
+            st.setString(4, deck.getCardId(2));
+            st.setString(5, deck.getCardId(3));
+            int count = st.executeUpdate();
+            st.close();
+            if(count > 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+    private Deck getCardsForDeck(String cardsJson, String username) {
+        String[] cards = new String[4];
+        Deck deck = new Deck();
+        JSONArray jsonCardArray = new JSONArray(cardsJson);
+        //Iterating the contents of the array
+        Iterator<Object> iterator = jsonCardArray.iterator();
+        int count = 0;
+        while(iterator.hasNext()) {
+            cards[count] = (String) iterator.next();
+            count++;
+        }
+        if(count != 4){
+            return null;
+        }
+
+        try {
+            PreparedStatement st = connection.prepareStatement("select c.card_id, c.name, damage from users as u join users_ticket as ut on u.user_id = ut.user_id join cards as c on ut.card_id = c.card_id where u.username = ? and c.card_id in (?, ?, ?, ?)");
+            st.setString(1, username);
+            st.setString(2, cards[0]);
+            st.setString(3, cards[1]);
+            st.setString(4, cards[2]);
+            st.setString(5, cards[3]);
+            ResultSet rs = st.executeQuery();
+            while(rs.next())
+            {
+                Card card = new Card(rs.getString("card_id"), rs.getString("name"), rs.getDouble("damage"));
+                deck.append(card);
+            }
+            if(deck.isFull()){
+                return deck;
+            }else{
+                return null;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void deleteAll(){
+        try {
+            PreparedStatement st = connection.prepareStatement("DELETE FROM users_ticket");
+            st.executeUpdate();
+            st = connection.prepareStatement("DELETE FROM users");
+            st.executeUpdate();
+            st = connection.prepareStatement("DELETE FROM cards");
+            st.executeUpdate();
+            st = connection.prepareStatement("DELETE FROM packages");
+            st.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

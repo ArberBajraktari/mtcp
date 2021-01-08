@@ -138,6 +138,8 @@ public class Server {
     //4 - buy package
     //5 - show cards from user
     //6 - show deck
+    //7 - configure deck
+
     private int checkRequest() {
         log("srv: Checking for errors...");
 
@@ -158,6 +160,8 @@ public class Server {
                     return 5;
                 }else if(_command[1].equals("deck") && _myVerb == Verb.GET){
                     return 6;
+                }else if(_command[1].equals("deck") && _myVerb == Verb.PUT){
+                    return 7;
                 }
                 if (_command.length == 3) {
                     if (_command[1].equals("transactions") && _command[2].equals("packages")) {
@@ -204,6 +208,9 @@ public class Server {
                 break;
             case 6:
                 showDeck();
+                break;
+            case 7:
+                configureDeck();
                 break;
 
         }
@@ -305,8 +312,21 @@ public class Server {
 
     }
 
-    private void configureDeck() {
-
+    private void configureDeck() throws IOException {
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
+            if(isUserValid(uname[0], uname[1])){
+                if(_db.setDeck(_payload, uname[0])){
+                    _out.write("Deck is reconfigured");
+                }else{
+                    _out.write("Cannot configure deck");
+                }
+            }else{
+                _out.write("User is not valid");
+            }
+        }else {
+            _out.write("No user entered.");
+        }
     }
 
     private void editUser() {
