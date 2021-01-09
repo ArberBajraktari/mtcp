@@ -18,31 +18,14 @@ public class Server {
     private String _version;
     private String _payload;
     private String[] _command;
-    private int _messagesNumber;
-    private List<String> _messagesSaved = new ArrayList<>();
     private Map<String, String> __header = new HashMap<>();
     private boolean _http_first_line = true;
 
-    private String[] _allowedReq = {"users", "sessions", "packages", "transactions", "cards", "deck", "stats", "score", "battles", "tradings"};
+    private String[] _allowedReq = {"users", "sessions", "packages", "transactions", "cards", "deck", "stats", "score", "battles", "tradings", "deck?format=plain"};
 
 
     public Server() {
     }
-//requestMode changed to one of the values below
-
-    //1 - create user
-//2 - login user
-//3 - create package
-//4 - acquire(buy) package
-//5 - show cards
-//6 - show deck
-//7 - configure deck
-//8 - show deck; different format
-//9 - edit user data
-//10 - show user stats
-//11- show user scoreboard
-//12- trading
-    private int requestMode;
 
     public Server(Socket clientSocket) throws IOException {
         this._in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -101,7 +84,6 @@ public class Server {
                         }
 
                     }
-
                 }
             }
         }
@@ -139,17 +121,18 @@ public class Server {
     //5 - show cards from user
     //6 - show deck
     //7 - configure deck
+    //8 - show deck other format
+    //9 - show users stats
 
     private int checkRequest() {
         log("srv: Checking for errors...");
 
         //check if command is supported
-        if (_myVerb == Verb.OTHER) {
+        if(_myVerb == Verb.OTHER) {
             System.out.println("srv: Request method not supported");
-            return 0;
         } else {
             _command = _message.split("/");
-            if (Arrays.asList(_allowedReq).contains(_command[1])) {
+            if(Arrays.asList(_allowedReq).contains(_command[1])) {
                 if (_command[1].equals("users") && _myVerb == Verb.POST) {
                     return 1;
                 }else if (_command[1].equals("sessions") && _myVerb == Verb.POST) {
@@ -162,6 +145,12 @@ public class Server {
                     return 6;
                 }else if(_command[1].equals("deck") && _myVerb == Verb.PUT){
                     return 7;
+                }else if(_command[1].equals("deck?format=plain") && _myVerb == Verb.GET){
+                    return 8;
+                }else if(_command[1].equals("users") && _myVerb == Verb.GET){
+                    return 9;
+                }else if(_command[1].equals("users") && _myVerb == Verb.PUT){
+                    return 10;
                 }
                 if (_command.length == 3) {
                     if (_command[1].equals("transactions") && _command[2].equals("packages")) {
@@ -172,11 +161,9 @@ public class Server {
                         return 0;
                     }
                 }
-                return 0;
-            } else {
-                return 0;
             }
         }
+        return 0;
     }
 
     private void performRequest(int status) throws IOException {
@@ -211,6 +198,15 @@ public class Server {
                 break;
             case 7:
                 configureDeck();
+                break;
+            case 8:
+                showDeckOther();
+                break;
+            case 9:
+                showStats();
+                break;
+            case 10:
+                setStats();
                 break;
 
         }
@@ -298,7 +294,7 @@ public class Server {
         if(getUserInfoHeader() != null){
             String[] uname = getUserInfoHeader();
             if(isUserValid(uname[0], uname[1])){
-                String deck = _db.getDeck(uname[0]);
+                String deck = _db.getDeck(uname[0], false);
                 _out.write(deck);
             }else{
                 _out.write("User is not valid");
@@ -308,8 +304,18 @@ public class Server {
         }
     }
 
-    private void showDeckOther() {
-
+    private void showDeckOther() throws IOException {
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
+            if(isUserValid(uname[0], uname[1])){
+                String deck = _db.getDeck(uname[0], true);
+                _out.write(deck);
+            }else{
+                _out.write("User is not valid");
+            }
+        }else {
+            _out.write("No user entered.");
+        }
     }
 
     private void configureDeck() throws IOException {
@@ -329,12 +335,22 @@ public class Server {
         }
     }
 
-    private void editUser() {
-
+    private void setStats() {
+        //set stats for user
     }
 
-    private void showStats() {
-
+    private void showStats() throws IOException {
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
+            if(isUserValid(uname[0], uname[1]) && _command[2].equals(uname[0]) ){
+                String stats = _db.getStats(uname[0]);
+                _out.write(stats);
+            }else{
+                _out.write("User is not valid");
+            }
+        }else{
+            _out.write("No user entered.");
+        }
     }
 
     private void showScoreboard() {

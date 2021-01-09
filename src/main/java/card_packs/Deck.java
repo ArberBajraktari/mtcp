@@ -51,6 +51,23 @@ public class Deck {
         return true;
     }
 
+    public String showDeckPlain(){
+        Server.log("Deck:");
+        StringBuilder deck = new StringBuilder();
+        deck.append("Deck:\n");
+        if(checkDeckCreated() == 0){
+            for( int i=0; i<4; i++){
+                deck.append(_deckCards[i].getName() + "is of ");
+                deck.append(_deckCards[i].getElementType() + " type \n");
+            }
+            return deck.toString();
+        }else{
+            Server.log("Cannot show Deck because it is not created!");
+            System.out.println("Cannot show Deck because it is not created!");
+            return null;
+        }
+    }
+
     public String getCardId(int cardId){
         return _deckCards[cardId].getId();
     }

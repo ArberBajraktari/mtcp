@@ -43,6 +43,12 @@ public class Client implements IPlayable{
         _password = _jsonUser.getString("Password");
     }
 
+    public Client(String username, String bio, String img){
+        _username = username;
+        _bio = bio;
+        _img = img;
+    }
+
 
     public int getEloRating() {
         return _eloRating;
@@ -70,18 +76,34 @@ public class Client implements IPlayable{
 
     //show client profile
     @SuppressWarnings("unused")
-    public void showProfile(){
+    public void showStats(){
         System.out.println("Users profile:");
         System.out.println("\r\tUsername: " + _username);
         System.out.println("\r\tCoins: " + _coins);
         System.out.println("\r\tElo Rating: " + _eloRating);
+        System.out.println("\r\tBio: " + _bio);
+        System.out.println("\r\tElo Img: " + _img);
     }
+
+    public String getStats(){
+        StringBuilder stats = new StringBuilder("Users stats:\n");
+        stats.append("\tUsername: " + _username);
+        stats.append("\n\tCoins: " + _coins);
+        stats.append("\n\tElo Rating: " + _eloRating);
+        stats.append("\n\tBio: " + _bio);
+        stats.append("\n\tImg: " + _img + "\n");
+        return stats.toString();
+    }
+
     public int getCoins(){
         return _coins;
     }
 
-    public void showStack(){
-
+    public void setCoins(int coins) {
+        this._coins = coins;
     }
 
+    public void setEloRating(int eloRating) {
+        this._eloRating = eloRating;
+    }
 }

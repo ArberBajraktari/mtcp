@@ -332,7 +332,7 @@ public class PostGre {
     }
 
 
-    public String getDeck(String username) {
+    public String getDeck(String username, boolean plain) {
         try {
             PreparedStatement st = connection.prepareStatement("select c.card_id, c.name, damage from users as u join users_ticket as ut on u.user_id = ut.user_id join cards as c on ut.card_id = c.card_id where u.username = ? and deck = u.user_id;");
             st.setString(1, username);
@@ -344,6 +344,9 @@ public class PostGre {
                 deck.append(card);
             }
             if(deck.showDeck() != null){
+                if(plain){
+                    return deck.showDeckPlain();
+                }
                 return deck.showDeck();
             }else{
                 return "Deck is empty (not configured)";
@@ -458,5 +461,24 @@ public class PostGre {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public String getStats(String username) {
+        try {
+            PreparedStatement st = connection.prepareStatement("select * from users where username = ?");
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            Client user = null;
+            while(rs.next())
+            {
+                user = new Client(rs.getString("username"), rs.getString("bio"), rs.getString("img"));
+                user.setCoins(rs.getInt("coins"));
+                user.setEloRating(rs.getInt("elorating"));
+            }
+            return user.getStats();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 }

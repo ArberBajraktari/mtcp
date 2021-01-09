@@ -188,7 +188,7 @@ public class MtcpTest {
         PostGre db = new PostGre();
         Client user = new Client("{\"Username\":\"login\", \"Password\":\"login\"}");
         db.logInUser(user);
-        assertEquals("Deck is empty (not configured)", db.getDeck("login"));
+        assertEquals("Deck is empty (not configured)", db.getDeck("login", false));
     }
 
     @Test
@@ -202,8 +202,8 @@ public class MtcpTest {
             p.savePackage();
         }
         db.buyPackage("login");
-        assertEquals(false, db.setDeck("['SA','asd','ads','asd']", "login"));
-        assertEquals(true, db.setDeck("['845f0dc7-37d0-426e-994e-43fc3ac83c08', '99f8f8dc-e25e-4a95-aa2c-782823f36e2a', 'e85e3976-7c86-4d06-9a80-641c2019a79f', 'dfdd758f-649c-40f9-ba3a-8657f4b3439f']", "login"));
+        assertFalse(db.setDeck("['SA','asd','ads','asd']", "login"));
+        assertTrue(db.setDeck("['845f0dc7-37d0-426e-994e-43fc3ac83c08', '99f8f8dc-e25e-4a95-aa2c-782823f36e2a', 'e85e3976-7c86-4d06-9a80-641c2019a79f', 'dfdd758f-649c-40f9-ba3a-8657f4b3439f']", "login"));
         db.deleteAll();
     }
 
