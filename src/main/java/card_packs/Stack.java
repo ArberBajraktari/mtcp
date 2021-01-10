@@ -1,12 +1,12 @@
 package card_packs;
 
 import card_packs.card.Card;
-import server.Server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Stack {
-    private static ArrayList<Card> _stackCards = new ArrayList<>();
+    private static final ArrayList<Card> _stackCards = new ArrayList<>();
     private int _cardCount = 0;
 
     public Stack(){
@@ -14,11 +14,11 @@ public class Stack {
 
     public String getStack(){
         StringBuilder str = new StringBuilder("Stack: \n");
-        for(int i = 0; i < _stackCards.size(); i++) {
-            str.append(_stackCards.get(i).getId() + ": ");
-            str.append(_stackCards.get(i).getName() + " - ");
-            str.append(_stackCards.get(i).getDamage() + "dmg - ");
-            str.append(_stackCards.get(i).getElementType() + "\n");
+        for (Card stackCard : _stackCards) {
+            str.append(stackCard.getId()).append(": ");
+            str.append(stackCard.getName()).append(" - ");
+            str.append(stackCard.getDamage()).append("dmg - ");
+            str.append(stackCard.getElementType()).append("\n");
         }
         return str.toString();
     }
@@ -30,9 +30,7 @@ public class Stack {
 
     public void appendPackage(Package p_package) {
         if( p_package.isCreated()) {
-            for (int i = 0; i < p_package.getPackage().length; i++) {
-                _stackCards.add(p_package.getPackage()[i]);
-            }
+            _stackCards.addAll(Arrays.asList(p_package.getPackage()));
             _cardCount += 5;
         }
     }

@@ -9,50 +9,42 @@ import java.net.Socket;
 import java.util.*;
 
 
-public class Server {
+public class Server implements Runnable{
     private Battlefield _battle;
-    private PostGre _db = new PostGre();
+    private final PostGre _db = new PostGre();
     private BufferedReader _in;
     private BufferedWriter _out;
     private StringBuilder _messageSeparator = new StringBuilder();
     private Verb _myVerb = Verb.OTHER;
     private String _message;
-    private String _version;
     private String _payload;
     private String[] _command;
-    private Map<String, String> __header = new HashMap<>();
+    private final Map<String, String> __header = new HashMap<>();
     private boolean _http_first_line = true;
 
-    private String[] _allowedReq = {"users", "sessions", "packages", "transactions", "cards", "deck", "stats", "score", "battles", "tradings", "deck?format=plain"};
+    private final String[] _allowedReq = {"users", "sessions", "packages", "transactions", "cards", "deck", "stats", "score", "battles", "tradings", "deck?format=plain"};
 
 
     public Server() {
+
     }
 
     public Server(Socket clientSocket,Battlefield battle) throws IOException {
         this._in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         this._out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         this._battle = battle;
+        Thread t = new Thread(this, battle.toString());
+        t.start();
     }
 
 
     protected void setMyVerb(String myVerb) {
         switch (myVerb) {
-            case "GET":
-                _myVerb = Verb.GET;
-                break;
-            case "POST":
-                _myVerb = Verb.POST;
-                break;
-            case "PUT":
-                _myVerb = Verb.PUT;
-                break;
-            case "DELETE":
-                _myVerb = Verb.DELETE;
-                break;
-            default:
-                _myVerb = Verb.OTHER;
-                break;
+            case "GET" -> _myVerb = Verb.GET;
+            case "POST" -> _myVerb = Verb.POST;
+            case "PUT" -> _myVerb = Verb.PUT;
+            case "DELETE" -> _myVerb = Verb.DELETE;
+            default -> _myVerb = Verb.OTHER;
         }
     }
 
@@ -68,7 +60,7 @@ public class Server {
                     String[] first_line = line.split(" ");
                     setMyVerb(first_line[0]);
                     _message = first_line[1];
-                    _version = first_line[2];
+//                    _version = first_line[2];
                     _http_first_line = false;
                 } else {
 
@@ -164,7 +156,7 @@ public class Server {
                 }
                 if (_command.length == 3) {
                     if (_command[1].equals("transactions") && _command[2].equals("packages")) {
-                        if (_command[2].equals("packages") && _myVerb == Verb.POST) {
+                        if (_myVerb == Verb.POST) {
                             return 4;
                         }
                     } else {
@@ -188,46 +180,19 @@ public class Server {
             _out.write("\r\n");
         }
         switch (status) {
-            case 1:
-                createUser(_payload);
-                break;
-            case 2:
-                logInUser(_payload);
-                break;
-            case 3:
-                savePackage(_payload);
-                break;
-            case 4:
-                buyPackage();
-                break;
-            case 5:
-                showStack();
-                break;
-            case 6:
-                showDeck();
-                break;
-            case 7:
-                configureDeck();
-                break;
-            case 8:
-                showDeckOther();
-                break;
-            case 9:
-                showUserData();
-                break;
-            case 10:
-                setStats();
-                break;
-            case 11:
-                showStats();
-                break;
-            case 12:
-                showScoreboard();
-                break;
-            case 13:
-                battle();
-                break;
-
+            case 1 -> createUser(_payload);
+            case 2 -> logInUser(_payload);
+            case 3 -> savePackage(_payload);
+            case 4 -> buyPackage();
+            case 5 -> showStack();
+            case 6 -> showDeck();
+            case 7 -> configureDeck();
+            case 8 -> showDeckOther();
+            case 9 -> showUserData();
+            case 10 -> setStats();
+            case 11 -> showStats();
+            case 12 -> showScoreboard();
+            case 13 -> battle();
         }
         _out.flush();
     }
@@ -296,7 +261,7 @@ public class Server {
             String[] uname = getUserInfoHeader();
             if (isUserValid(uname[0], uname[1])) {
                 if (_db.buyPackage(uname[0]) == 1) {
-                    _out.write("Package is accuired");
+                    _out.write("Package is acquired");
                 } else {
                     _out.write("Cannot buy package");
                 }
@@ -428,10 +393,6 @@ public class Server {
         }
     }
 
-    private void trade() {
-
-    }
-
     public static void log(String msg) {
         File file = new File("log.txt");
 
@@ -464,16 +425,16 @@ public class Server {
 
     private boolean isUserValid(String username, String token) {
         if (_db.isLogged(username)) {
-            if (token.contains("mtcgToken")) {
-                return true;
-            } else {
-                return false;
-            }
+            return token.contains("mtcgToken");
 
         } else {
             return false;
         }
     }
 
+    @Override
+    public void run() {
+
+    }
 }
 

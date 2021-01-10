@@ -11,7 +11,7 @@ import java.util.Random;
 public class Battlefield {
     private String _username1;
     private String _username2;
-    private PostGre _db = new PostGre();
+    private final PostGre _db = new PostGre();
     private Deck _deck1;
     private Deck _deck2;
     int[] cards_taken_1 = new int[4];
@@ -35,10 +35,7 @@ public class Battlefield {
     }
 
     public boolean readyToBattle(){
-        if(_deck1 != null && _deck2 != null){
-            return true;
-        }
-        return false;
+        return _deck1 != null && _deck2 != null;
     }
 
     public String fight(){
@@ -79,19 +76,19 @@ public class Battlefield {
     }
 
     public String checkWinner(){
-        int cardsDown1, cardsDown2 = 0;
+        int cardsDown1, cardsDown2;
         cardsDown1 = getCardsTaken(1);
         cardsDown2 = getCardsTaken(2);
         cleanVar();
         if(cardsDown1 > cardsDown2){
             _db.updateScore(_username1, _username2, 1);
-            return _username1 + " won this battle";
+            return _username1 + " won this battle\n";
         }else if(cardsDown2 > cardsDown1){
             _db.updateScore(_username1, _username2, 2);
-            return _username2 + " won this battle";
+            return _username2 + " won this battle\n";
         }else{
             _db.updateScore(_username1, _username2, 0);
-            return "This battle was a draw";
+            return "This battle was a draw\n";
         }
     }
 
@@ -103,7 +100,7 @@ public class Battlefield {
     }
 
     public void fightCards(Card card1, int card1_num, Card card2, int card2_num) {
-        int winner = 0;
+        int winner;
         Server.log(_username1 + " plays his card: " + card1.getName());
         Server.log(_username2 + " plays his card: " + card2.getName());
         if(card1.getCardType() == card2.getCardType()){
@@ -121,16 +118,10 @@ public class Battlefield {
             winner = getWinner(card1, card1_num, card2, card2_num);
         }
 
-        switch (winner){
-            case 0:
-                Server.log("This round is a tie\n");
-                break;
-            case 1:
-                Server.log(_username1 + " won this round.\n");
-                break;
-            case 2:
-                Server.log(_username2 + " won this round.\n");
-                break;
+        switch (winner) {
+            case 0 -> Server.log("This round is a tie\n");
+            case 1 -> Server.log(_username1 + " won this round.\n");
+            case 2 -> Server.log(_username2 + " won this round.\n");
         }
     }
 
@@ -231,12 +222,13 @@ public class Battlefield {
         }
         return count;
     }
-
+    
+    @SuppressWarnings("unused")
     public void showIntTaken(){
         for( int i=0; i<4; i++){
             System.out.print(cards_taken_1[i] + " ");
         }
-        System.out.println("");
+        System.out.println();
         for( int i=0; i<4; i++){
             System.out.print(cards_taken_2[i] + " ");
         }

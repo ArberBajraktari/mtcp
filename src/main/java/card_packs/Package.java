@@ -4,7 +4,6 @@ import card_packs.card.Card;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import server.PostGre;
-import server.Server;
 
 public class Package {
 
@@ -28,10 +27,7 @@ public class Package {
     //1 - number of cards inserted is not 5
     //2 - package received empty input and not created
     public boolean isCreated(){
-        if(_jsonCardArray.length() != 5){
-            return false;
-        }
-        return true;
+        return _jsonCardArray.length() == 5;
     }
 
     @SuppressWarnings("unused")
@@ -50,7 +46,6 @@ public class Package {
         for(int i=0; i < _jsonCardArray.length(); i++) {
             db.insertCardToPackage(id+1, _packageCards[i]);
         }
-        System.out.println("Package is saved in the Database!");
     }
 
     private String tripleToSingle(String jsonText){
@@ -60,10 +55,10 @@ public class Package {
     static String showCards(Card[] deckCards) {
         StringBuilder str = new StringBuilder("Deck: \n");
         for (Card deckCard : deckCards) {
-            str.append(deckCard.getId() + ": ");
-            str.append(deckCard.getName() + " - ");
-            str.append(deckCard.getDamage() + "dmg - ");
-            str.append(deckCard.getElementType() + "\n");
+            str.append(deckCard.getId()).append(": ");
+            str.append(deckCard.getName()).append(" - ");
+            str.append(deckCard.getDamage()).append("dmg - ");
+            str.append(deckCard.getElementType()).append("\n");
         }
         return str.toString();
     }

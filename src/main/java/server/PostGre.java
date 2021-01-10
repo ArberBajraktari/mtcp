@@ -29,7 +29,6 @@ public class PostGre {
             user_exst.setString(1, user.getUsername());
             ResultSet rs = user_exst.executeQuery();
             if(rs.next()){
-                System.out.println("Already exists!");
                 return 0;
             }else{
                 PreparedStatement st = connection.prepareStatement("INSERT INTO users (username, password, coins, elorating, logged, bio, img, name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -79,17 +78,13 @@ public class PostGre {
 
 
     public boolean isLogged(String username){
-        PreparedStatement user_exst = null;
+        PreparedStatement user_exst;
         try {
             user_exst = connection.prepareStatement( "SELECT logged FROM users where username = ?" );
             user_exst.setString(1, username);
             ResultSet rs = user_exst.executeQuery();
             if(rs.next()){
-                if(rs.getBoolean("logged")){
-                    return true;
-                }else{
-                    return false;
-                }
+                return rs.getBoolean("logged");
             }else {
                 return false;
             }
@@ -104,7 +99,7 @@ public class PostGre {
     }
 
     public int logInUser(Client user) {
-        PreparedStatement stm = null;
+        PreparedStatement stm;
         try {
             PreparedStatement user_exst = connection.prepareStatement( "SELECT password FROM users where username = ?" );
             user_exst.setString(1, user.getUsername());
@@ -165,11 +160,11 @@ public class PostGre {
     }
 
     public int getMaxId() {
-        Statement stmt = null;
+        Statement stmt;
         try {
             stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT package_id FROM packages ORDER BY package_id DESC LIMIT 1" );
-            while (rs.next())
+            if(rs.next())
             {
                 return rs.getInt("package_id");
             }
@@ -180,11 +175,11 @@ public class PostGre {
     }
 
     public int getMinId() {
-        Statement stmt = null;
+        Statement stmt;
         try {
             stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT package_id FROM packages ORDER BY package_id ASC LIMIT 1" );
-            while (rs.next())
+            if(rs.next())
             {
                 return rs.getInt("package_id");
             }
@@ -201,6 +196,7 @@ public class PostGre {
         if(pck_id != 0 && coins >= 5){
             Card[] cards = getCardsFromPackage(pck_id);
             deleteCardsFromPackage(pck_id);
+            assert cards != null;
             if(saveCardsWithUser(cards, id) == 1 && decreaseCoinsFromUser(username) == 1){
                 return 1;
             }
@@ -239,7 +235,7 @@ public class PostGre {
             stmt = connection.prepareStatement( "SELECT coins FROM users where username = ?");
             stmt.setString(1,username);
             ResultSet rs = stmt.executeQuery();
-            while (rs.next())
+            if(rs.next())
             {
                 return rs.getInt("coins");
             }
@@ -284,6 +280,7 @@ public class PostGre {
     }
 
     //test scenario buyPackageTest()
+    @SuppressWarnings("unused")
     public int deleteUsersFromTickets(String username){
         PreparedStatement stmt;
         try {
@@ -298,7 +295,7 @@ public class PostGre {
         return 0;
     }
 
-    private int saveCardsWithUser(Card cards[], int user_id){
+    private int saveCardsWithUser(Card[] cards, int user_id){
         try {
             for(Card card: cards){
                 PreparedStatement st = connection.prepareStatement("INSERT INTO cards (card_id, name, damage, deck) VALUES (?, ?, ?, ?)");
@@ -383,6 +380,7 @@ public class PostGre {
     }
 
     //test scenario buyPackageTest()
+    @SuppressWarnings("unused")
     public int deleteCardsFromUser(String username) {
         PreparedStatement stmt;
         try {
@@ -418,12 +416,7 @@ public class PostGre {
             st.setString(5, deck.getCardId(3));
             int count = st.executeUpdate();
             st.close();
-            if(count > 0){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return count > 0;
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -482,6 +475,8 @@ public class PostGre {
             st.executeUpdate();
             st = connection.prepareStatement("DELETE FROM packages");
             st.executeUpdate();
+            st = connection.prepareStatement("DELETE FROM score");
+            st.executeUpdate();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -498,6 +493,7 @@ public class PostGre {
             {
                 user = new Client(rs.getString("username"), rs.getString("bio"), rs.getString("img"), rs.getString("name"));
             }
+            assert user != null;
             return user.getUserDate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -517,6 +513,7 @@ public class PostGre {
                 user.setEloRating(rs.getInt("elorating"));
                 user.setCoins(rs.getInt("coins"));
             }
+            assert user != null;
             return user.getStats();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -529,14 +526,13 @@ public class PostGre {
             PreparedStatement st = connection.prepareStatement("select wins, loses, draws, coins_spent from users as u join score as s on u.user_id = s.user_id where username = ?");
             st.setString(1, username);
             ResultSet rs = st.executeQuery();
-            Client user = null;
             StringBuilder scoreB = new StringBuilder("Scoreboard:\n");
             while(rs.next())
             {
-               scoreB.append("\tWins: " + rs.getString("wins"));
-               scoreB.append("\n\tLoses: " + rs.getString("loses"));
-               scoreB.append("\n\tDraws: " + rs.getString("draws"));
-               scoreB.append("\n\tCoins spent: " + rs.getString("coins_spent"));
+               scoreB.append("\tWins: ").append(rs.getString("wins"));
+               scoreB.append("\n\tLoses: ").append(rs.getString("loses"));
+               scoreB.append("\n\tDraws: ").append(rs.getString("draws"));
+               scoreB.append("\n\tCoins spent: ").append(rs.getString("coins_spent"));
             }
             return scoreB.toString();
         } catch (SQLException throwables) {

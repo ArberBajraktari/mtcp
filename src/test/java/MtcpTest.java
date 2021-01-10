@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MtcpTest {
     public static Card monster = new Card("id1", "Dragon", 10.0);
-    public static Card monster2 = new Card("id2", "Dragoni", 10.1);
     public static Card spell1 = new Card("id2", "FireSpell", 30.0);
     public static Card spell2 = new Card("id3", "WaterSpell", 11.0);
     public static Card spell3 = new Card("id4", "RegularSpell", 11.0);
@@ -69,7 +68,7 @@ public class MtcpTest {
     }
 
     @Test
-    void stackTest() {
+    void stackAddPackageTest() {
         Package p_works = new Package("[{\\\"Id\\\":\\\"845f0dc7-37d0-426e-994e-43fc3ac83c08\\\", \\\"Name\\\":\\\"WaterGoblin\\\", \\\"Damage\\\": 10.0}, {\\\"Id\\\":\\\"99f8f8dc-e25e-4a95-aa2c-782823f36e2a\\\", \\\"Name\\\":\\\"Dragon\\\", \\\"Damage\\\": 50.0}, {\\\"Id\\\":\\\"e85e3976-7c86-4d06-9a80-641c2019a79f\\\", \\\"Name\\\":\\\"WaterSpell\\\", \\\"Damage\\\": 20.0}, {\\\"Id\\\":\\\"1cb6ab86-bdb2-47e5-b6e4-68c5ab389334\\\", \\\"Name\\\":\\\"Ork\\\", \\\"Damage\\\": 45.0}, {\\\"Id\\\":\\\"dfdd758f-649c-40f9-ba3a-8657f4b3439f\\\", \\\"Name\\\":\\\"FireSpell\\\",    \\\"Damage\\\": 25.0}]");
         Package p_n_works = new Package("[{\\\"Id\\\":\\\"4a2757d6-b1c3-47ac-b9a3-91deab093531\\\", \\\"Name\\\":\\\"Dragon\\\", \\\"Damage\\\": 55.0}, {\\\"Id\\\":\\\"4a2757d6-b1c3-47ac-b9a3-91deab093531\\\", \\\"Name\\\":\\\"Dragon\\\", \\\"Damage\\\": 55.0}, {\\\"Id\\\":\\\"91a6471b-1426-43f6-ad65-6fc473e16f9f\\\", \\\"Name\\\":\\\"WaterSpell\\\", \\\"Damage\\\": 21.0}, {\\\"Id\\\":\\\"4ec8b269-0dfa-4f97-809a-2c63fe2a0025\\\", \\\"Name\\\":\\\"Ork\\\", \\\"Damage\\\": 55.0}]");
 
@@ -180,15 +179,6 @@ public class MtcpTest {
         }
         assertEquals(1, db.buyPackage("login"));
         db.deleteAll();
-    }
-
-    @Test
-    void getStackTest(){
-        PostGre db = new PostGre();
-        Client user = new Client("{\"Username\":\"login\", \"Password\":\"login\"}");
-        db.logInUser(user);
-        db.buyPackage("login");
-        assertEquals("Stack: \n", db.getStack("login"));
     }
 
     @Test

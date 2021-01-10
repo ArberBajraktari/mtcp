@@ -1,4 +1,3 @@
-import client.Client;
 import server.Battlefield;
 import server.Server;
 

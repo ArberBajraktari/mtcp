@@ -11,8 +11,8 @@ public class Client{
     private int _coins;
     private int _eloRating;
     private boolean _logged;
-    private String _bio;
-    private String _img;
+    private final String _bio;
+    private final String _img;
 
 
     public Client(){
@@ -75,21 +75,17 @@ public class Client{
     }
 
     public String getStats(){
-        StringBuilder stats = new StringBuilder("Users stats:\n");
-        stats.append("\n\tName: " + _name);
-        stats.append("\n\tCoins: " + _coins);
-        stats.append("\n\tElo Rating: " + _eloRating);
-        stats.append("\n\tBio: " + _bio);
-        stats.append("\n\tImg: " + _img + "\n");
-        return stats.toString();
+        return "Users stats:\n" + "\n\tName: " + _name +
+                "\n\tCoins: " + _coins +
+                "\n\tElo Rating: " + _eloRating +
+                "\n\tBio: " + _bio +
+                "\n\tImg: " + _img + "\n";
     }
 
     public String getUserDate(){
-        StringBuilder stats = new StringBuilder("Users data:\n");
-        stats.append("\n\tName: " + _name);
-        stats.append("\n\tBio: " + _bio);
-        stats.append("\n\tImg: " + _img + "\n");
-        return stats.toString();
+        return "Users data:\n" + "\n\tName: " + _name +
+                "\n\tBio: " + _bio +
+                "\n\tImg: " + _img + "\n";
     }
 
     public int getCoins(){

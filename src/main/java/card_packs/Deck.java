@@ -1,7 +1,6 @@
 package card_packs;
 
 import card_packs.card.Card;
-import server.Server;
 
 import java.util.Arrays;
 
@@ -54,8 +53,8 @@ public class Deck {
         deck.append("Deck:\n");
         if(checkDeckCreated() == 0){
             for( int i=0; i<4; i++){
-                deck.append(_deckCards[i].getName() + "is of ");
-                deck.append(_deckCards[i].getElementType() + " type \n");
+                deck.append(_deckCards[i].getName()).append("is of ");
+                deck.append(_deckCards[i].getElementType()).append(" type \n");
             }
             return deck.toString();
         }else{
