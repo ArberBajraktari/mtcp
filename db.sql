@@ -11,6 +11,16 @@ CREATE TABLE "users" (
     PRIMARY KEY (user_id)
 );
 
+create table "score" (
+    score_id int not null,
+    user_id int not null,
+    wins int not null,
+    loses int not null,
+    draws int not null,
+    CONSTRAINT score_id
+        PRIMARY KEY (score_id)
+);
+
 CREATE TABLE "cards" (
         card_id varchar(40) NOT NULL,
         name varchar(40),
@@ -41,6 +51,7 @@ create table "packages" (
 );
 
 
+
 create sequence user_id_seq
    owned by users.user_id;
 
@@ -52,3 +63,9 @@ alter table users
 
 -- alter table packages
 --    alter column package_id set default nextval('package_id_seq');
+
+create sequence score_id_seq
+    owned by score.score_id;
+
+alter table score
+    alter column score_id set default nextval('score_id_seq');

@@ -32,12 +32,10 @@ public class Deck {
     }
 
     public String showDeck(){
-        Server.log("Deck:");
         if(checkDeckCreated() == 0){
             return Package.showCards(_deckCards);
 
         }else{
-            Server.log("Cannot show Deck because it is not created!");
             System.out.println("Cannot show Deck because it is not created!");
             return null;
         }
@@ -52,7 +50,6 @@ public class Deck {
     }
 
     public String showDeckPlain(){
-        Server.log("Deck:");
         StringBuilder deck = new StringBuilder();
         deck.append("Deck:\n");
         if(checkDeckCreated() == 0){
@@ -62,7 +59,6 @@ public class Deck {
             }
             return deck.toString();
         }else{
-            Server.log("Cannot show Deck because it is not created!");
             System.out.println("Cannot show Deck because it is not created!");
             return null;
         }
@@ -70,6 +66,10 @@ public class Deck {
 
     public String getCardId(int cardId){
         return _deckCards[cardId].getId();
+    }
+
+    public Card getCard(int key){
+        return _deckCards[key-1];
     }
 
 

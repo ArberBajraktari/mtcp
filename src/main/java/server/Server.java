@@ -1,5 +1,6 @@
 package server;
 
+import card_packs.Deck;
 import card_packs.Package;
 import client.Client;
 
@@ -9,6 +10,7 @@ import java.util.*;
 
 
 public class Server {
+    private Battlefield _battle;
     private PostGre _db = new PostGre();
     private BufferedReader _in;
     private BufferedWriter _out;
@@ -27,9 +29,10 @@ public class Server {
     public Server() {
     }
 
-    public Server(Socket clientSocket) throws IOException {
+    public Server(Socket clientSocket,Battlefield battle) throws IOException {
         this._in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         this._out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        this._battle = battle;
     }
 
 
@@ -92,7 +95,6 @@ public class Server {
 
     public void readRequest() throws IOException {
         //read and save request
-        log("Reading request...");
         //save request
         while (_in.ready()) {
             _messageSeparator.append((char) _in.read());
@@ -122,10 +124,12 @@ public class Server {
     //6 - show deck
     //7 - configure deck
     //8 - show deck other format
-    //9 - show users stats
-
+    //9 - show users data
+    //10- set users data
+    //11- show users stats
+    //12- show scoreboard of user
+    //13- enter battle
     private int checkRequest() {
-        log("srv: Checking for errors...");
 
         //check if command is supported
         if(_myVerb == Verb.OTHER) {
@@ -151,6 +155,12 @@ public class Server {
                     return 9;
                 }else if(_command[1].equals("users") && _myVerb == Verb.PUT){
                     return 10;
+                }else if(_command[1].equals("stats") && _myVerb == Verb.GET){
+                    return 11;
+                }else if(_command[1].equals("score") && _myVerb == Verb.GET){
+                    return 12;
+                }else if(_command[1].equals("battles") && _myVerb == Verb.POST){
+                    return 13;
                 }
                 if (_command.length == 3) {
                     if (_command[1].equals("transactions") && _command[2].equals("packages")) {
@@ -203,14 +213,41 @@ public class Server {
                 showDeckOther();
                 break;
             case 9:
-                showStats();
+                showUserData();
                 break;
             case 10:
                 setStats();
                 break;
+            case 11:
+                showStats();
+                break;
+            case 12:
+                showScoreboard();
+                break;
+            case 13:
+                battle();
+                break;
 
         }
         _out.flush();
+    }
+
+    private void battle() throws IOException {
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
+            if(isUserValid(uname[0], uname[1])){
+                Deck deck = _db.getDeck(uname[0]);
+                _battle.addDeck(deck, uname[0]);
+                if(_battle.readyToBattle()){
+                    String winner = _battle.fight();
+                    _out.write(winner);
+                }
+            }else{
+                _out.write("User is not valid");
+            }
+        }else{
+            _out.write("No user entered.");
+        }
     }
 
     //depending on requestMode
@@ -218,7 +255,6 @@ public class Server {
         Client user = new Client(json);
         if (_db.registerUser(user) == 1) {
             _out.write("New user is created\n");
-            log("New user is created.");
         } else {
             _out.write("Username already exists\n");
         }
@@ -229,10 +265,8 @@ public class Server {
         _db.logInUser(user);
         if (_db.logInUser(user) == 0) {
             _out.write("Can't log user in\n");
-            log("Can't log user in");
         } else {
             _out.write("User is logged.\n");
-            log("User is logged.");
         }
     }
 
@@ -294,7 +328,7 @@ public class Server {
         if(getUserInfoHeader() != null){
             String[] uname = getUserInfoHeader();
             if(isUserValid(uname[0], uname[1])){
-                String deck = _db.getDeck(uname[0], false);
+                String deck = _db.getDeckString(uname[0], false);
                 _out.write(deck);
             }else{
                 _out.write("User is not valid");
@@ -308,7 +342,7 @@ public class Server {
         if(getUserInfoHeader() != null){
             String[] uname = getUserInfoHeader();
             if(isUserValid(uname[0], uname[1])){
-                String deck = _db.getDeck(uname[0], true);
+                String deck = _db.getDeckString(uname[0], true);
                 _out.write(deck);
             }else{
                 _out.write("User is not valid");
@@ -335,14 +369,40 @@ public class Server {
         }
     }
 
-    private void setStats() {
-        //set stats for user
-    }
-
-    private void showStats() throws IOException {
+    private void setStats() throws IOException {
         if(getUserInfoHeader() != null){
             String[] uname = getUserInfoHeader();
             if(isUserValid(uname[0], uname[1]) && _command[2].equals(uname[0]) ){
+                if(_db.setStats(_payload, uname[0])){
+                    _out.write("user updated");
+                }else{
+                    _out.write("Something went wrong");
+                }
+            }else{
+                _out.write("User is not valid");
+            }
+        }else{
+            _out.write("No user entered.");
+        }
+    }
+
+    private void showUserData() throws IOException {
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
+            if(isUserValid(uname[0], uname[1]) && _command[2].equals(uname[0]) ){
+                String stats = _db.getUserData(uname[0]);
+                _out.write(stats);
+            }else{
+                _out.write("User is not valid");
+            }
+        }else{
+            _out.write("No user entered.");
+        }
+    }
+    private void showStats() throws IOException {
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
+            if(isUserValid(uname[0], uname[1])){
                 String stats = _db.getStats(uname[0]);
                 _out.write(stats);
             }else{
@@ -353,8 +413,19 @@ public class Server {
         }
     }
 
-    private void showScoreboard() {
-
+    private void showScoreboard() throws IOException {
+        if(getUserInfoHeader() != null){
+            String[] uname = getUserInfoHeader();
+            if(isUserValid(uname[0], uname[1])){
+                String stats = _db.getScoreboard(uname[0]);
+                _out.write(stats);
+                _out.write("\n");
+            }else{
+                _out.write("User is not valid");
+            }
+        }else{
+            _out.write("No user entered.");
+        }
     }
 
     private void trade() {

@@ -6,15 +6,23 @@ import card_packs.card.ELEMENT;
 import card_packs.Package;
 import client.Client;
 import org.junit.jupiter.api.Test;
+import server.Battlefield;
 import server.PostGre;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MtcpTest {
     public static Card monster = new Card("id1", "Dragon", 10.0);
-    public static Card spell1 = new Card("id2", "FireSpell", 11.0);
+    public static Card monster2 = new Card("id2", "Dragoni", 10.1);
+    public static Card spell1 = new Card("id2", "FireSpell", 30.0);
     public static Card spell2 = new Card("id3", "WaterSpell", 11.0);
     public static Card spell3 = new Card("id4", "RegularSpell", 11.0);
+
+    @Test
+    void cleanAll(){
+        PostGre db = new PostGre();
+        db.deleteAll();
+    }
 
     @Test
     void configureCardMonsterTest() {
@@ -188,7 +196,7 @@ public class MtcpTest {
         PostGre db = new PostGre();
         Client user = new Client("{\"Username\":\"login\", \"Password\":\"login\"}");
         db.logInUser(user);
-        assertEquals("Deck is empty (not configured)", db.getDeck("login", false));
+        assertEquals("Deck is empty (not configured)", db.getDeckString("login", false));
     }
 
     @Test
@@ -205,6 +213,12 @@ public class MtcpTest {
         assertFalse(db.setDeck("['SA','asd','ads','asd']", "login"));
         assertTrue(db.setDeck("['845f0dc7-37d0-426e-994e-43fc3ac83c08', '99f8f8dc-e25e-4a95-aa2c-782823f36e2a', 'e85e3976-7c86-4d06-9a80-641c2019a79f', 'dfdd758f-649c-40f9-ba3a-8657f4b3439f']", "login"));
         db.deleteAll();
+    }
+
+    @Test
+    void showIntTakenTest(){
+        Battlefield battle = new Battlefield();
+        battle.fightCards(spell1, 3, spell1, 4);
     }
 
 

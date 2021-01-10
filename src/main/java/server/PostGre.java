@@ -32,7 +32,7 @@ public class PostGre {
                 System.out.println("Already exists!");
                 return 0;
             }else{
-                PreparedStatement st = connection.prepareStatement("INSERT INTO users (username, password, coins, elorating, logged, bio, img) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement st = connection.prepareStatement("INSERT INTO users (username, password, coins, elorating, logged, bio, img, name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                 st.setString(1, user.getUsername());
                 st.setString(2, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
                 st.setInt(3, user.getCoins());
@@ -40,6 +40,10 @@ public class PostGre {
                 st.setBoolean(5, user.isLogged());
                 st.setString(6, user.getBio());
                 st.setString(7, user.getImg());
+                st.setString(8, user.getName());
+                st.executeUpdate();
+                st = connection.prepareStatement("INSERT into score (user_id, wins, loses, draws, coins_spent) values (?, 0, 0, 0, 0)");
+                st.setInt(1, getIdFromUsername(user.getUsername()));
                 st.executeUpdate();
                 st.close();
                 return 1;
@@ -212,6 +216,9 @@ public class PostGre {
             stm = connection.prepareStatement( "UPDATE users set coins = coins - 5 WHERE username = ?" );
             stm.setString(1, username);
             if(stm.executeUpdate() > 0) {
+                stm = connection.prepareStatement("update score set coins_spent = coins_spent + 5 where user_id = ?");
+                stm.setInt(1,getIdFromUsername(username));
+                stm.executeUpdate();
                 stm.close();
                 return 1;
             }else{
@@ -332,7 +339,7 @@ public class PostGre {
     }
 
 
-    public String getDeck(String username, boolean plain) {
+    public String getDeckString(String username, boolean plain) {
         try {
             PreparedStatement st = connection.prepareStatement("select c.card_id, c.name, damage from users as u join users_ticket as ut on u.user_id = ut.user_id join cards as c on ut.card_id = c.card_id where u.username = ? and deck = u.user_id;");
             st.setString(1, username);
@@ -355,6 +362,24 @@ public class PostGre {
             throwables.printStackTrace();
         }
         return "Something went wrong";
+    }
+
+    public Deck getDeck(String username) {
+        try {
+            PreparedStatement st = connection.prepareStatement("select c.card_id, c.name, damage from users as u join users_ticket as ut on u.user_id = ut.user_id join cards as c on ut.card_id = c.card_id where u.username = ? and deck = u.user_id;");
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            Deck deck = new Deck();
+            while(rs.next())
+            {
+                Card card = new Card(rs.getString("card_id"), rs.getString("name"), rs.getDouble("damage"));
+                deck.append(card);
+            }
+            return deck;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 
     //test scenario buyPackageTest()
@@ -463,7 +488,7 @@ public class PostGre {
         }
     }
 
-    public String getStats(String username) {
+    public String getUserData(String username) {
         try {
             PreparedStatement st = connection.prepareStatement("select * from users where username = ?");
             st.setString(1, username);
@@ -471,14 +496,115 @@ public class PostGre {
             Client user = null;
             while(rs.next())
             {
-                user = new Client(rs.getString("username"), rs.getString("bio"), rs.getString("img"));
-                user.setCoins(rs.getInt("coins"));
+                user = new Client(rs.getString("username"), rs.getString("bio"), rs.getString("img"), rs.getString("name"));
+            }
+            return user.getUserDate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getStats(String username) {
+        try {
+            PreparedStatement st = connection.prepareStatement("select * from users as u join score as s on u.user_id = s.user_id where username = ?");
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            Client user = null;
+            while(rs.next())
+            {
+                user = new Client(rs.getString("username"), rs.getString("bio"), rs.getString("img"), rs.getString("name"));
                 user.setEloRating(rs.getInt("elorating"));
+                user.setCoins(rs.getInt("coins"));
             }
             return user.getStats();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return null;
+    }
+
+    public String getScoreboard(String username) {
+        try {
+            PreparedStatement st = connection.prepareStatement("select wins, loses, draws, coins_spent from users as u join score as s on u.user_id = s.user_id where username = ?");
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            Client user = null;
+            StringBuilder scoreB = new StringBuilder("Scoreboard:\n");
+            while(rs.next())
+            {
+               scoreB.append("\tWins: " + rs.getString("wins"));
+               scoreB.append("\n\tLoses: " + rs.getString("loses"));
+               scoreB.append("\n\tDraws: " + rs.getString("draws"));
+               scoreB.append("\n\tCoins spent: " + rs.getString("coins_spent"));
+            }
+            return scoreB.toString();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public boolean setStats(String json, String username) {
+        JSONObject user = new JSONObject(json);
+        try {
+            PreparedStatement st = connection.prepareStatement("update users set name = ?, bio = ?, img = ?  where username = ?");
+            st.setString(1, user.getString("Name"));
+            st.setString(2, user.getString("Bio"));
+            st.setString(3, user.getString("Image"));
+            st.setString(4, username);
+            int count = st.executeUpdate();
+            if(count > 0){
+                return true;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public void updateScore(String username1, String username2, int result) {
+        try {
+            PreparedStatement st;
+            if(result == 1){
+                st = connection.prepareStatement("update score set wins = wins+1 where user_id = ?");
+                st.setInt(1, getIdFromUsername(username1));
+                st.executeUpdate();
+                st = connection.prepareStatement("update users set elorating = elorating+3 where username = ?");
+                st.setString(1, username1);
+                st.executeUpdate();
+                st = connection.prepareStatement("update score set loses = loses+1 where user_id = ?");
+                st.setInt(1, getIdFromUsername(username2));
+                st.executeUpdate();
+                st = connection.prepareStatement("update users set elorating = elorating-5 where username = ?");
+                st.setString(1, username2);
+                st.executeUpdate();
+            }else if(result == 2){
+                st = connection.prepareStatement("update score set wins = wins+1 where user_id = ?");
+                st.setInt(1, getIdFromUsername(username2));
+                st.executeUpdate();
+                st = connection.prepareStatement("update users set elorating = elorating+3 where user_id = ?");
+                st.setInt(1, getIdFromUsername(username2));
+                st.executeUpdate();
+                st = connection.prepareStatement("update score set loses = loses+1 where user_id = ?");
+                st.setInt(1, getIdFromUsername(username1));
+                st.executeUpdate();
+                st = connection.prepareStatement("update users set elorating = elorating-5 where user_id = ?");
+                st.setInt(1, getIdFromUsername(username1));
+                st.executeUpdate();
+            }else{
+                st = connection.prepareStatement("update score set draws = draws+1 where user_id = ?");
+                st.setInt(1, getIdFromUsername(username2));
+                st.executeUpdate();
+                st = connection.prepareStatement("update score set draws = draws+1 where user_id = ?");
+                st.setInt(1, getIdFromUsername(username1));
+                st.executeUpdate();
+            }
+            st.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

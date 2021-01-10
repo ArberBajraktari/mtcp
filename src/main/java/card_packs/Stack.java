@@ -15,7 +15,6 @@ public class Stack {
     public String getStack(){
         StringBuilder str = new StringBuilder("Stack: \n");
         for(int i = 0; i < _stackCards.size(); i++) {
-            Server.log(_stackCards.get(i).getId() + ": " + _stackCards.get(i).getName() + " - " + _stackCards.get(i).getDamage() + "dmg - " + _stackCards.get(i).getElementType());
             str.append(_stackCards.get(i).getId() + ": ");
             str.append(_stackCards.get(i).getName() + " - ");
             str.append(_stackCards.get(i).getDamage() + "dmg - ");

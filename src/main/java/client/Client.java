@@ -1,36 +1,23 @@
 package client;
-import card_packs.Deck;
-import card_packs.Package;
-import card_packs.Stack;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import server.PostGre;
-import server.Server;
 
 
-public class Client implements IPlayable{
+public class Client{
 
     //clients info
     private String _username;
     private String _password;
+    private String _name;
     private int _coins;
     private int _eloRating;
     private boolean _logged;
     private String _bio;
     private String _img;
 
-    private MODE _stance = MODE.ATTACK;
-
-    private Server _server;
-    private PostGre _db;
-
-    private Deck _deck = new Deck();
-    private Stack _stack = new Stack();
-
 
     public Client(){
         _coins = 20;
-        _eloRating = 0;
+        _eloRating = 100;
         _logged = false;
         _bio = "hello";
         _img = ":)";
@@ -40,13 +27,15 @@ public class Client implements IPlayable{
         this();
         JSONObject _jsonUser = new JSONObject(json);
         _username = _jsonUser.getString("Username");
+        _name = _username;
         _password = _jsonUser.getString("Password");
     }
 
-    public Client(String username, String bio, String img){
+    public Client(String username, String bio, String img, String name){
         _username = username;
         _bio = bio;
         _img = img;
+        _name = name;
     }
 
 
@@ -87,9 +76,17 @@ public class Client implements IPlayable{
 
     public String getStats(){
         StringBuilder stats = new StringBuilder("Users stats:\n");
-        stats.append("\tUsername: " + _username);
+        stats.append("\n\tName: " + _name);
         stats.append("\n\tCoins: " + _coins);
         stats.append("\n\tElo Rating: " + _eloRating);
+        stats.append("\n\tBio: " + _bio);
+        stats.append("\n\tImg: " + _img + "\n");
+        return stats.toString();
+    }
+
+    public String getUserDate(){
+        StringBuilder stats = new StringBuilder("Users data:\n");
+        stats.append("\n\tName: " + _name);
         stats.append("\n\tBio: " + _bio);
         stats.append("\n\tImg: " + _img + "\n");
         return stats.toString();
@@ -105,5 +102,9 @@ public class Client implements IPlayable{
 
     public void setEloRating(int eloRating) {
         this._eloRating = eloRating;
+    }
+
+    public String getName() {
+        return _name;
     }
 }

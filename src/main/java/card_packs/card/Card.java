@@ -6,7 +6,7 @@ public class Card {
 
     private final String __name;
     private String __id;
-    private final double __damage;
+    private double __damage;
     private ELEMENT __elementType;
     private CARDTYPE __cardType;
 
@@ -57,11 +57,28 @@ public class Card {
         return __damage;
     }
 
+    public void doubleDamage() {
+        __damage *= 2;
+    }
+
+    public void halfDamage() {
+        __damage *= 0.5;
+    }
+
+
     public String getElementType(){
         return __elementType.toString();
     }
 
+    public ELEMENT getElement(){
+        return __elementType;
+    }
+
     public String isMonster(){
         return __cardType.toString();
+    }
+
+    public CARDTYPE getCardType() {
+        return __cardType;
     }
 }
