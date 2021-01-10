@@ -1,13 +1,11 @@
 package card_packs;
 
 import card_packs.card.Card;
-import server.Server;
 
 import java.util.Arrays;
 
 public class Deck {
     private final Card[] _deckCards = new Card[4];
-    private boolean _configured = false;
 
     public Deck(){
         Arrays.fill(_deckCards, null);
@@ -32,19 +30,45 @@ public class Deck {
         return 0;
     }
 
-    @SuppressWarnings("unused")
-    public void showDeck(){
-        Server.log("Deck:");
+    public String showDeck(){
         if(checkDeckCreated() == 0){
-            Package.showCards(_deckCards);
+            return Package.showCards(_deckCards);
+
         }else{
-            Server.log("Cannot show Deck because it is not created!");
             System.out.println("Cannot show Deck because it is not created!");
+            return null;
+        }
+    }
+    public boolean isFull(){
+        for (Card deckCard : _deckCards) {
+            if (deckCard == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String showDeckPlain(){
+        StringBuilder deck = new StringBuilder();
+        deck.append("Deck:\n");
+        if(checkDeckCreated() == 0){
+            for( int i=0; i<4; i++){
+                deck.append(_deckCards[i].getName()).append("is of ");
+                deck.append(_deckCards[i].getElementType()).append(" type \n");
+            }
+            return deck.toString();
+        }else{
+            System.out.println("Cannot show Deck because it is not created!");
+            return null;
         }
     }
 
-    private void configure(){
+    public String getCardId(int cardId){
+        return _deckCards[cardId].getId();
+    }
 
+    public Card getCard(int key){
+        return _deckCards[key-1];
     }
 
 

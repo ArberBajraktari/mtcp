@@ -1,36 +1,23 @@
 package client;
-import card_packs.Deck;
-import card_packs.Package;
-import card_packs.Stack;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import server.PostGre;
-import server.Server;
 
 
-public class Client implements IPlayable{
+public class Client{
 
     //clients info
     private String _username;
     private String _password;
+    private String _name;
     private int _coins;
     private int _eloRating;
     private boolean _logged;
-    private String _bio;
-    private String _img;
-
-    private MODE _stance = MODE.ATTACK;
-
-    private Server _server;
-    private PostGre _db = new PostGre();
-
-    private Deck _deck = new Deck();
-    private Stack _stack = new Stack();
+    private final String _bio;
+    private final String _img;
 
 
     public Client(){
         _coins = 20;
-        _eloRating = 0;
+        _eloRating = 100;
         _logged = false;
         _bio = "hello";
         _img = ":)";
@@ -40,7 +27,15 @@ public class Client implements IPlayable{
         this();
         JSONObject _jsonUser = new JSONObject(json);
         _username = _jsonUser.getString("Username");
+        _name = _username;
         _password = _jsonUser.getString("Password");
+    }
+
+    public Client(String username, String bio, String img, String name){
+        _username = username;
+        _bio = bio;
+        _img = img;
+        _name = name;
     }
 
 
@@ -70,42 +65,42 @@ public class Client implements IPlayable{
 
     //show client profile
     @SuppressWarnings("unused")
-    public void showProfile(){
+    public void showStats(){
         System.out.println("Users profile:");
         System.out.println("\r\tUsername: " + _username);
         System.out.println("\r\tCoins: " + _coins);
         System.out.println("\r\tElo Rating: " + _eloRating);
+        System.out.println("\r\tBio: " + _bio);
+        System.out.println("\r\tElo Img: " + _img);
     }
 
-    public boolean signUp(String username, String password) {
-        //save to DB
-        return true;
+    public String getStats(){
+        return "Users stats:\n" + "\n\tName: " + _name +
+                "\n\tCoins: " + _coins +
+                "\n\tElo Rating: " + _eloRating +
+                "\n\tBio: " + _bio +
+                "\n\tImg: " + _img + "\n";
     }
 
-    public boolean logIn(String username, String password){
-        //get from DB
-        return true;
-    }
-
-
-    public void buyPackage(){
-        if(isCoinsValid()){
-            //TODO: buy package, change database rows.
-            _db.buyPackage(_username);
-        }else{
-            System.out.println("Not enough money!");
-        }
-    }
-
-    public boolean isCoinsValid(){
-        if(_coins >= 5){
-            return true;
-        }
-        return false;
+    public String getUserDate(){
+        return "Users data:\n" + "\n\tName: " + _name +
+                "\n\tBio: " + _bio +
+                "\n\tImg: " + _img + "\n";
     }
 
     public int getCoins(){
         return _coins;
     }
 
+    public void setCoins(int coins) {
+        this._coins = coins;
+    }
+
+    public void setEloRating(int eloRating) {
+        this._eloRating = eloRating;
+    }
+
+    public String getName() {
+        return _name;
+    }
 }
